@@ -1,0 +1,122 @@
+<template>
+  <div id="hidden">
+    <!-- 这是用来渲染 echars -->
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      myChart: null
+    }
+  },
+  methods: {
+    initEcharts () {
+      // 初始化
+      this.myChart = this.echarts.init(document.querySelector('#hidden'))
+      let option = {
+        grid: {
+          top: 50,
+          x: 55,
+          y2: 40
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: ['2019-12-6', '2019-12-07', '2019-12-08', '2019-12-09', '2019-12-10', '2019-12-11'],
+          axisLine: {
+            lineStyle: {
+              color: '#289fe3', // 更改坐标轴颜色,
+              width: 2
+            }
+          },
+          axisLabel: {
+            textStyle: {
+              color: '#fff',
+              fontSize: 10
+            }
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        yAxis: {
+          type: 'value',
+          axisLabel: {
+            textStyle: {
+              color: '#fff',
+              fontSize: 12
+            },
+            formatter: '{value} %'
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#289fe3', // 更改坐标轴颜色,
+              width: 2
+            }
+          },
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        series: [
+          {
+            data: [100, 30, 80, 30, 60, 30],
+            type: 'line',
+            areaStyle: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 1,
+                    color: '#0e5778' // 0% 处的颜色
+                  },
+                  {
+                    offset: 0.7,
+                    color: '#23709d' // 30% 处的颜色
+                  },
+                  {
+                    offset: 0,
+                    color: '#3c9bd5' // 100% 处的颜色
+                  }
+                ],
+                global: false // 缺省为 false
+              }
+            },
+            lineStyle: {
+              color: '#3c9bd5'
+            },
+            itemStyle: {
+              color: '#f8fc0d'
+            }
+          }
+        ],
+        tooltip: {
+        }
+      }
+      this.myChart.setOption(option)
+    }
+  },
+  // 页面打开时初始化 echart
+  mounted () {
+    this.initEcharts()
+  }
+  // vue 的生命周期的问题；
+  //  created: 没有生成 dom 初始化了 data & method
+  //  mounted: 可以获取到 dom
+}
+</script>
+
+<style lang="less" scoped>
+#hidden {
+  background-color: transparent;
+}
+</style>

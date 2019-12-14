@@ -1,0 +1,63 @@
+<template>
+  <el-row>
+    <el-col :span="5">
+      <div class="box">
+        <Totalequipment class="fix-ge"></Totalequipment>
+        <EquipentReported class="fix-ge"></EquipentReported>
+        <News class="fix-ge"></News>
+      </div>
+    </el-col>
+    <el-col :span="14">
+      <div class="box">
+        <EquipmentDistribution></EquipmentDistribution>
+      </div>
+    </el-col>
+    <el-col :span="5">
+      <div class="box">
+        <HiddenDanger class="fix-ge"></HiddenDanger>
+        <HiddenDangerLevel class="fix-ge"></HiddenDangerLevel>
+        <Patrol class="fix-ge"></Patrol>
+      </div>
+    </el-col>
+  </el-row>
+</template>
+<script>
+import Totalequipment from '../components/Total_equipment'
+import EquipentReported from '../components/EquipmentReported'
+import HiddenDanger from '../components/Hidden_Danger'
+import HiddenDangerLevel from '../components/Hidden_Danger_level'
+import News from '../components/News'
+import Patrol from '../components/Patrol'
+import EquipmentDistribution from '../components/EquipmentDistribution'
+export default {
+  components: {
+    Totalequipment, // 设备总数
+    EquipentReported, // 设备报告
+    HiddenDanger, // 隐患
+    HiddenDangerLevel, // 隐患级别
+    News, // 事件
+    Patrol, // 异常
+    EquipmentDistribution // 设备分布
+  }
+}
+</script>
+<style lang="less" scoped>
+.el-row {
+  width: 100%;
+  height: 100%;
+  .el-col {
+    height: 100%;
+    .box {
+      height: 97%;
+      .fix-ge {
+        width: 80%;
+        height: 30.33%;
+        margin: 7% auto 0;
+        box-sizing: border-box;
+        border: 3px solid #289fe3;
+        box-shadow: 0px 0px 20px #1176a7 inset, 0px 0px 20px #27a9eb;
+      }
+    }
+  }
+}
+</style>
