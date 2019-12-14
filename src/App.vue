@@ -4,7 +4,7 @@
       <el-row>
         <el-col :span="6">
           <div class="left-top">
-            <p class="time">2019-12-06 15:00:00 星期二</p>
+            <p class="time">{{ nowTime | datefilter }}</p>
             <p class="runking">设备总数排行</p>
           </div>
         </el-col>
@@ -28,9 +28,15 @@
 </template>
 <script>
 import PAMain from './views/PA_Main'
+import moment from 'moment'
 export default {
   components: {
     PAMain
+  },
+  filters: {
+    datefilter: function (value) {
+      return moment(value).format('YYYY年 MM月 Do h:mm:ss dddd')
+    }
   }
 }
 </script>
@@ -58,7 +64,7 @@ export default {
           .time {
             margin-top: 20/96rem;
             text-align: center;
-            font-size: 16/96rem;
+            font-size: 12/96rem;
           }
           .runking {
             position: absolute;

@@ -1,18 +1,18 @@
 <template>
   <el-row>
-    <el-col :span="5">
+    <el-col :span="4">
       <div class="box">
         <Totalequipment class="fix-ge"></Totalequipment>
         <EquipentReported class="fix-ge"></EquipentReported>
         <News class="fix-ge"></News>
       </div>
     </el-col>
-    <el-col :span="14">
+    <el-col :span="16">
       <div class="box">
         <EquipmentDistribution></EquipmentDistribution>
       </div>
     </el-col>
-    <el-col :span="5">
+    <el-col :span="4">
       <div class="box">
         <HiddenDanger class="fix-ge"></HiddenDanger>
         <HiddenDangerLevel class="fix-ge"></HiddenDangerLevel>
@@ -50,9 +50,9 @@ export default {
     .box {
       height: 97%;
       .fix-ge {
-        width: 80%;
+        width: 90%;
         height: 30.33%;
-        margin: 7% auto 0;
+        margin: 9% auto 0;
         box-sizing: border-box;
         border: 1.5/96rem solid #289fe3;
         box-shadow: 0px 0px 5/96rem #1176a7 inset, 0px 0px 5/96rem #27a9eb;

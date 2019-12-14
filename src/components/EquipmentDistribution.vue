@@ -20,11 +20,11 @@
         </li>
         <li>
           <i></i>
-          <p>烟感</p>
+          <p>烟 感</p>
         </li>
         <li>
           <i></i>
-          <p>燃气</p>
+          <p>燃 气</p>
         </li>
         <li>
           <i></i>
@@ -302,6 +302,7 @@ export default {
       let option = {
         // backgroundColor: '#333',
         geo: {
+          left: 15,
           map: 'china',
           roam: true,
           zoom: 1,
@@ -417,8 +418,8 @@ export default {
     position: absolute;
     top: 10/96rem;
     right: 10/96rem;
-    width: 35%;
-    height: 27%;
+    width: 25%;
+    height: 20%;
     ul {
       width: 100%;
       height: 100%;
@@ -430,7 +431,7 @@ export default {
         height: 50%;
         text-align: center;
         color: #fff;
-        font-size: 8/96rem;
+        font-size: 6/96rem;
         i {
           display: block;
           margin: 10% auto;
@@ -445,13 +446,13 @@ export default {
   .sidebar {
     background-color: transparent;
     position: absolute;
-    top: 35%;
+    top: 40%;
     right: 4%;
-    width: 170/96rem;
-    height: 152/96rem;
+    width: 150/96rem;
+    height: 138/96rem;
     .sidebar-title {
       width: 100%;
-      height: 20/96rem;
+      height: 18/96rem;
       font-size: 14/96rem;
       color: #fff;
       padding-left: 18/96rem;
@@ -459,15 +460,15 @@ export default {
     }
     .notes {
       width: 100%;
-      height: 44/96rem;
-      padding-top: 2/96rem;
+      height: 42/96rem;
+      padding-top: 3/96rem;
       background: rgba(209, 161, 106, 0.5)
     }
     .yuan {
       margin-left: 6/96rem;
       margin-right: 13/96rem;
-      width: 40/96rem;
-      height: 40/96rem;
+      width: 37/96rem;
+      height: 37/96rem;
       border: 1/96rem dashed #fff;
       border-radius: 50%;
       p {
