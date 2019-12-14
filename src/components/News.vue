@@ -15,13 +15,13 @@ export default {
 </script>
 <style scoped lang="less">
     li {
-        margin-left: 10%;
+        margin-left: 10/96rem;
         list-style:none;
-        height: 45px;
+        height: 15/96rem;
         &:nth-child(1) {
-            font-size: 30px;
-            margin-top: 5%;
-            margin-bottom: 5%;
+            font-size: 10/96rem;
+            margin-top: 5/96rem;
+            margin-bottom: 5/96rem;
         }
         a {
             color:#fff;

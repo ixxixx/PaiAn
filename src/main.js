@@ -10,6 +10,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/styles/index.less'
 // 导入 echarts
 import echarts from 'echarts'
+// 在 src\main.js 中引入 lib-flexible
+import 'lib-flexible'
 Vue.prototype.echarts = echarts
 Vue.config.productionTip = false
 Vue.use(ElementUI)

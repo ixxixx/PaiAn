@@ -36,7 +36,7 @@ export default {
 </script>
 <style lang="less" scoped>
 #app {
-  background: url("./assets/demo.jpg");
+  background: url("./assets/dome3.jpg");
   width: 100%;
   height: 100%;
   background-repeat: no-repeat;
@@ -56,22 +56,22 @@ export default {
           height: 100%;
           position: relative;
           .time {
-            margin-top: 30px;
+            margin-top: 20/96rem;
             text-align: center;
-            font-size: 24px;
+            font-size: 16/96rem;
           }
           .runking {
             position: absolute;
             left: 10%;
             bottom: 15%;
-            font-size: 18px;
+            font-size: 10/96rem;
           }
         }
 
         .title {
-          font-size: 45px;
+          font-size: 30/96rem;
           text-align: center;
-          line-height: 150%;
+          line-height: 2;
         }
         .box {
           position: relative;
@@ -79,15 +79,15 @@ export default {
           height: 100%;
           .lately-left {
             position: absolute;
-            font-size: 20px;
+            font-size: 10/96rem;
             left: 25%;
-            bottom: 0;
+            bottom: 10/96rem;
           }
           .lately-right {
             position: absolute;
             right: 10%;
-            bottom: 5%;
-            font-size: 12px;
+            bottom: -5/96rem;
+            font-size: 8/96rem;
           }
         }
       }

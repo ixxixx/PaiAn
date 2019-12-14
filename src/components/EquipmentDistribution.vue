@@ -40,16 +40,29 @@
         </li>
       </ul>
     </div>
-    <div class="sidebar"></div>
+    <div class="sidebar">
+      <div class="sidebar-title">事件状态</div>
+      <div class="sidebar-one notes">
+        <div class="yuan"><p>火警</p></div>
+      </div>
+      <div class="sidebar-two notes">
+        <div class="yuan"><p>故障</p></div>
+      </div>
+      <div class="sidebar-three notes">
+        <div class="yuan">
+          <p class="mt3">事件<br />比例</p>
+        </div>
+      </div>
+    </div>
     <div class="footer-quan">
       <div id="fire-quan"></div>
       <div class="fire-notes">
-          <ul>
-              <li>这是数据的展示这是数据的展示这是数据的展示</li>
-              <li>这是数据的展示这是数据的展示这是数据的展示</li>
-              <li>这是数据的展示这是数据的展示这是数据的展示</li>
-              <li>这是数据的展示这是数据的展示这是数据的展示</li>
-          </ul>
+        <ul>
+          <li>这是数据的展示</li>
+          <li>这是数据的展示</li>
+          <li>这是数据的展示</li>
+          <li>这是数据的展示</li>
+        </ul>
       </div>
       <!-- 事件柱状图 -->
       <div id="event-zzt"></div>
@@ -58,6 +71,7 @@
 </template>
 
 <script>
+import './china.js'
 export default {
   data () {
     return {
@@ -282,17 +296,99 @@ export default {
         ]
       }
       this.myChart.setOption(option)
+    },
+    initChinaMap () {
+      this.myChart = this.echarts.init(document.querySelector('#china-map'))
+      let option = {
+        // backgroundColor: '#333',
+        geo: {
+          map: 'china',
+          roam: true,
+          zoom: 1,
+          aspectScale: 0.75, // 长宽比
+          itemStyle: {
+            normal: {
+              areaColor: {
+                colorStops: [{
+                  offset: 0,
+                  color: '#039ee1'
+                }, {
+                  offset: 1,
+                  color: '#2e6fb1'
+                }],
+                borderColor: '#6ed6f7'
+              }
+            },
+            emphasis: {
+              areaColor: '#38a2d9'
+            }
+          },
+          label: {
+            normal: {
+              show: true,
+              textStyle: {
+                color: '#fff'
+              }
+            }
+            // emphasis: {
+            //     color: '#fff',
+            // }
+          }
+        },
+        series: [{
+          type: 'effectScatter',
+          coordinateSystem: 'geo',
+          data: [{
+            'name': '昆明',
+            'value': [102.73333, 25.05000, 199]
+          }
+
+          ],
+          symbolSize: 10,
+          showEffectOn: 'render',
+          rippleEffect: {
+            brushType: 'stroke',
+            color: '#fff',
+            period: 8,
+            scale: 3
+          },
+          hoverAnimation: true,
+          label: {
+            normal: {
+              formatter: '{b}',
+              position: 'right',
+              padding: [0, 0, 0, 8],
+              show: true,
+              fontSize: 14
+            }
+          },
+          itemStyle: {
+            normal: {
+              color: 'red',
+              shadowBlur: 10
+            }
+          },
+          zlevel: 1
+        }
+
+        ]
+      }
+      this.myChart.setOption(option)
     }
   },
   // 页面打开时初始化 echart
   mounted () {
     this.initFireEcharts()
     this.initEventEcharts()
+    this.initChinaMap()
   }
 }
 </script>
 <style lang="less" scoped>
 .eq-main {
+  div {
+    box-sizing: border-box;
+  }
   width: 100%;
   height: 100%;
   position: relative;
@@ -304,22 +400,23 @@ export default {
   }
   .total-title {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 10/96rem;
+    left: 10/96rem;
     color: #fff;
     p {
-      font-size: 24px;
+      font-size: 14/96rem;
     }
     li {
       float: left;
-      margin-top: 10px;
-      margin-right: 20px;
+      margin-top: 10/96rem;
+      margin-right: 14/96rem;
+      font-size: 8/96rem;
     }
   }
   .nav {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 10/96rem;
+    right: 10/96rem;
     width: 35%;
     height: 27%;
     ul {
@@ -333,7 +430,7 @@ export default {
         height: 50%;
         text-align: center;
         color: #fff;
-        font-size: 16px;
+        font-size: 8/96rem;
         i {
           display: block;
           margin: 10% auto;
@@ -342,6 +439,52 @@ export default {
           background-color: red;
           border-radius: 50%;
         }
+      }
+    }
+  }
+  .sidebar {
+    background-color: transparent;
+    position: absolute;
+    top: 35%;
+    right: 4%;
+    width: 170/96rem;
+    height: 152/96rem;
+    .sidebar-title {
+      width: 100%;
+      height: 20/96rem;
+      font-size: 14/96rem;
+      color: #fff;
+      padding-left: 18/96rem;
+      background-color: #ff00f7;
+    }
+    .notes {
+      width: 100%;
+      height: 44/96rem;
+      padding-top: 2/96rem;
+      background: rgba(209, 161, 106, 0.5)
+    }
+    .yuan {
+      margin-left: 6/96rem;
+      margin-right: 13/96rem;
+      width: 40/96rem;
+      height: 40/96rem;
+      border: 1/96rem dashed #fff;
+      border-radius: 50%;
+      p {
+        margin: 0 auto;
+        color: #fff;
+        font-size: 10/96rem;
+        text-align: center;
+        margin-top: 12/96rem;
+      }
+    }
+    .sidebar-two {
+      background: rgba(241, 99, 103, 0.5);
+    }
+    .sidebar-three {
+      background: rgba(66, 32, 145, 0.3);
+      .mt3 {
+        margin-top: 6/96rem;
       }
     }
   }
@@ -360,24 +503,29 @@ export default {
       background-color: transparent;
     }
     .fire-notes {
-        position: absolute;
-        bottom: 0;
-        width: 30%;
-        height: 55%;
-        background-color: transparent;
+      position: absolute;
+      bottom: 0;
+      width: 30%;
+      height: 55%;
+      background-color: transparent;
+      ul {
+        width: 100%;
+        height: 100%;
         li {
-            font-size: 15px;
-            color: #fff;
-            line-height: 2;
+          font-size: 8/96rem;
+          color: #fff;
+          line-height: 2;
+          overflow: hidden;
         }
+      }
     }
     #event-zzt {
-        position: absolute;
-        width: 30%;
-        height: 100%;
-        right: 0;
-        bottom: 0;
-        background-color: transparent;
+      position: absolute;
+      width: 30%;
+      height: 100%;
+      right: 0;
+      bottom: 0;
+      background-color: transparent;
     }
   }
 }

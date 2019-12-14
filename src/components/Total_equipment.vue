@@ -19,7 +19,7 @@ export default {
         grid: {
           top: 50,
           x: 45,
-          x2: 130,
+          x2: 20,
           y2: 40
         },
         xAxis: {
@@ -48,7 +48,7 @@ export default {
           axisLabel: {
             textStyle: {
               color: '#fff',
-              fontSize: 8
+              fontSize: 10
             }
           },
           axisLine: {

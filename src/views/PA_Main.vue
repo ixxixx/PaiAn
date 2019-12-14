@@ -54,8 +54,8 @@ export default {
         height: 30.33%;
         margin: 7% auto 0;
         box-sizing: border-box;
-        border: 3px solid #289fe3;
-        box-shadow: 0px 0px 20px #1176a7 inset, 0px 0px 20px #27a9eb;
+        border: 1.5/96rem solid #289fe3;
+        box-shadow: 0px 0px 5/96rem #1176a7 inset, 0px 0px 5/96rem #27a9eb;
       }
     }
   }

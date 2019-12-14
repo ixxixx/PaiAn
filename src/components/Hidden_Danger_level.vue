@@ -73,7 +73,7 @@ export default {
           },
           axisLabel: {
             textStyle: {
-              fontSize: 16
+              fontSize: 14
             }
           },
           splitLine: {
