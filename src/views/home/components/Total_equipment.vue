@@ -12,10 +12,20 @@ export default {
     }
   },
   methods: {
+    // 折线图
     initEcharts () {
       // 初始化
       this.myChart = this.echarts.init(document.querySelector('#container'))
       let option = {
+        title: {
+          text: '设备总数排行',
+          x: 'center',
+          y: '10px',
+          textStyle: {
+            color: '#fff',
+            fontSize: 16
+          }
+        },
         grid: {
           top: 50,
           x: 45,

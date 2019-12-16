@@ -5,7 +5,6 @@
       <p>设备类型分布</p>
       <ul>
         <li>全部</li>
-        <li>设备类型</li>
         <li>电器安全</li>
         <li>燃气探测警报</li>
         <li>火灾烟雾警报</li>
@@ -13,18 +12,18 @@
       </ul>
     </div>
     <div class="nav">
-      <ul>
+      <ul class="ul-six">
         <li>
           <i></i>
           <p>电器安全</p>
         </li>
         <li>
           <i></i>
-          <p>烟感</p>
+          <p>烟 感</p>
         </li>
         <li>
           <i></i>
-          <p>燃气</p>
+          <p>燃 气</p>
         </li>
         <li>
           <i></i>
@@ -71,7 +70,7 @@
 </template>
 
 <script>
-import './china.js'
+import './china'
 export default {
   data () {
     return {
@@ -79,6 +78,7 @@ export default {
     }
   },
   methods: {
+    // 火警圆圈
     initFireEcharts () {
       // 初始化
       this.myChart = this.echarts.init(document.querySelector('#fire-quan'))
@@ -201,7 +201,7 @@ export default {
           formatter: '{b}:{c}'
         },
         grid: {
-          left: '5%',
+          left: '15%',
           top: '20%',
           right: '15%',
           bottom: '1%',
@@ -297,11 +297,13 @@ export default {
       }
       this.myChart.setOption(option)
     },
+    // 中国地图
     initChinaMap () {
       this.myChart = this.echarts.init(document.querySelector('#china-map'))
       let option = {
         // backgroundColor: '#333',
         geo: {
+          left: 15,
           map: 'china',
           roam: true,
           zoom: 1,
@@ -415,11 +417,11 @@ export default {
   }
   .nav {
     position: absolute;
-    top: 10/96rem;
-    right: 10/96rem;
-    width: 35%;
-    height: 27%;
-    ul {
+    top: 30/96rem;
+    right: -10/96rem;
+    width: 25%;
+    height: 20%;
+    .ul-six {
       width: 100%;
       height: 100%;
       display: flex;
@@ -430,11 +432,11 @@ export default {
         height: 50%;
         text-align: center;
         color: #fff;
-        font-size: 8/96rem;
+        font-size: 6/96rem;
         i {
           display: block;
           margin: 10% auto;
-          width: 60%;
+          width: 55%;
           height: 60%;
           background-color: red;
           border-radius: 50%;
@@ -445,13 +447,13 @@ export default {
   .sidebar {
     background-color: transparent;
     position: absolute;
-    top: 35%;
-    right: 4%;
-    width: 170/96rem;
-    height: 152/96rem;
+    top: 40%;
+    right: 5/96rem;
+    width: 150/96rem;
+    height: 138/96rem;
     .sidebar-title {
       width: 100%;
-      height: 20/96rem;
+      height: 18/96rem;
       font-size: 14/96rem;
       color: #fff;
       padding-left: 18/96rem;
@@ -459,15 +461,15 @@ export default {
     }
     .notes {
       width: 100%;
-      height: 44/96rem;
-      padding-top: 2/96rem;
-      background: rgba(209, 161, 106, 0.5)
+      height: 42/96rem;
+      padding-top: 3/96rem;
+      background: rgba(209, 161, 106, 0.5);
     }
     .yuan {
       margin-left: 6/96rem;
       margin-right: 13/96rem;
-      width: 40/96rem;
-      height: 40/96rem;
+      width: 37/96rem;
+      height: 37/96rem;
       border: 1/96rem dashed #fff;
       border-radius: 50%;
       p {

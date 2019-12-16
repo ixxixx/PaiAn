@@ -12,7 +12,12 @@ import '@/styles/index.less'
 import echarts from 'echarts'
 // 在 src\main.js 中引入 lib-flexible
 import 'lib-flexible'
+// 时间
+import moment from 'moment'// 导入文件
+
 Vue.prototype.echarts = echarts
+Vue.prototype.$moment = moment
+moment.locale('zh-cn')// 需要汉化
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 new Vue({

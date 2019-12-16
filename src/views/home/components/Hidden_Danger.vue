@@ -16,10 +16,26 @@ export default {
       // 初始化
       this.myChart = this.echarts.init(document.querySelector('#hidden'))
       let option = {
+        title: {
+          text: '最近30天隐患数量',
+          subtext: '最近30天隐患数量趋势',
+          sublink: '#',
+          x: '10px',
+          y: '5px',
+          itemGap: 10,
+          textStyle: {
+            color: '#fff',
+            fontSize: 16
+          },
+          subtextStyle: {
+            color: '#fff',
+            fontSize: 11
+          }
+        },
         grid: {
-          top: 50,
+          top: 70,
           x: 55,
-          y2: 40
+          y2: 30
         },
         xAxis: {
           type: 'category',
