@@ -4,17 +4,13 @@
       <el-row>
         <el-col :span="6">
           <div class="left-top">
-            <el-menu
-              default-active="2"
-              class="el-menu-vertical-demo tabDiv"
-              >
+            <el-menu default-active="2" class="el-menu-vertical-demo tabDiv">
               <el-submenu index="1">
                 <template slot="title">
                   <i class="el-icon-menu"></i>
                 </template>
                 <el-menu-item-group>
-                  <template slot="title"
-                    >分组一</template>
+                  <template slot="title">分组一</template>
                   <el-menu-item index="1-1">选项1</el-menu-item>
                   <el-menu-item index="1-2">选项2</el-menu-item>
                 </el-menu-item-group>
@@ -28,11 +24,13 @@
                 </el-submenu>
               </el-submenu>
             </el-menu>
+            <p class="time">{{ nowTime | datefilter }}</p>
+            <p class="runking">设备总数排行</p>
           </div>
         </el-col>
         <el-col :span="12">
           <div class="title">
-            智慧消防  "米若"  云服务平台
+            智慧消防 "米若" 云服务平台
           </div>
         </el-col>
         <el-col :span="6">
@@ -60,7 +58,6 @@ export default {
     PAMain
   },
   filters: {
-    // 过滤时间格式
     datefilter: function (value) {
       return moment(value).format('YYYY年 MM月 Do h:mm:ss dddd')
     }
@@ -129,7 +126,6 @@ export default {
               color: #fff;
               width: 30%;
             }
-
           }
           .el-icon-menu {
             width: 22/96rem;
