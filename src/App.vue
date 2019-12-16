@@ -24,8 +24,6 @@
                 </el-submenu>
               </el-submenu>
             </el-menu>
-            <p class="time">{{ nowTime | datefilter }}</p>
-            <p class="runking">设备总数排行</p>
           </div>
         </el-col>
         <el-col :span="12">
