@@ -2,14 +2,14 @@
   <el-row>
     <el-col :span="4">
       <div class="box">
-        <Totalequipment class="fix-ge"></Totalequipment>
-        <EquipentReported class="fix-ge"></EquipentReported>
+        <TotalDevice class="fix-ge"></TotalDevice>
+        <DeviceReported class="fix-ge"></DeviceReported>
         <News class="fix-ge"></News>
       </div>
     </el-col>
     <el-col :span="16">
       <div class="box">
-        <EquipmentDistribution></EquipmentDistribution>
+        <DeviceDistribution></DeviceDistribution>
       </div>
     </el-col>
     <el-col :span="4">
@@ -22,22 +22,22 @@
   </el-row>
 </template>
 <script>
-import Totalequipment from './components/Total_equipment'
-import EquipentReported from './components/EquipmentReported'
+import TotalDevice from './components/TotalDevice'
+import DeviceReported from './components/DeviceReported'
 import HiddenDanger from './components/Hidden_Danger'
-import HiddenDangerLevel from './components/Hidden_Danger_level'
+import HiddenDangerLevel from './components/HiddenDangerLevel'
 import News from './components/News'
 import Patrol from './components/Patrol'
-import EquipmentDistribution from './components/EquipmentDistribution'
+import DeviceDistribution from './components/DeviceDistribution'
 export default {
   components: {
-    Totalequipment, // 设备总数
-    EquipentReported, // 设备报告
+    TotalDevice, // 设备总数
+    DeviceReported, // 设备报告
     HiddenDanger, // 隐患
     HiddenDangerLevel, // 隐患级别
     News, // 事件
     Patrol, // 异常
-    EquipmentDistribution // 设备分布
+    DeviceDistribution // 设备分布
   }
 }
 </script>

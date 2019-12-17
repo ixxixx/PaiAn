@@ -14,7 +14,10 @@ import echarts from 'echarts'
 import 'lib-flexible'
 // 时间
 import moment from 'moment'// 导入文件
-
+import BaiduMap from 'vue-baidu-map'
+Vue.use(BaiduMap, {
+  ak: '6EtTxRf8kxcj3x71mhxGkRYtlfVCbX1S'
+})
 Vue.prototype.echarts = echarts
 Vue.prototype.$moment = moment
 moment.locale('zh-cn')// 需要汉化

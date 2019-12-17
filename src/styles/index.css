@@ -29,6 +29,9 @@ footer {
   margin: 0;
   padding: 0;
 }
+div {
+  box-sizing: border-box;
+}
 li {
   list-style: none;
 }
@@ -64,4 +67,6 @@ body {
 .clearfix {
   *zoom: 1;
 }
-
+@media (width: 1200px) {
+  font-size: 120px;
+}

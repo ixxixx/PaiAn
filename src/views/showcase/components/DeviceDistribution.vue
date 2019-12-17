@@ -399,6 +399,7 @@ export default {
     width: 100%;
     height: 100%;
     background-color: transparent;
+    z-index: 3;
   }
   .total-title {
     position: absolute;
@@ -454,7 +455,7 @@ export default {
     .sidebar-title {
       width: 100%;
       height: 18/96rem;
-      font-size: 14/96rem;
+      font-size: 12/96rem;
       color: #fff;
       padding-left: 18/96rem;
       background-color: #ff00f7;
