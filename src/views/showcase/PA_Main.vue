@@ -38,6 +38,13 @@ export default {
     News, // 事件
     Patrol, // 异常
     DeviceDistribution // 设备分布
+  },
+  mounted () {
+    // window.onresize = () => {
+    //   this.myChart1.resize()
+    //   this.myChart2.resize()
+    //   this.myChart3.resize()
+    // }
   }
 }
 </script>

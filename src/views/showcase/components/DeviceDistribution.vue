@@ -1,6 +1,60 @@
 <template>
   <div class="eq-main">
-    <div id="china-map"></div>
+    <div class="map">
+      <el-tabs v-model="shouxuan" type="card" @tab-click="handleClick">
+        <el-tab-pane label="矢量 图" name="first">
+          <div id="china-map" style="height:100%"></div>
+        </el-tab-pane>
+        <el-tab-pane label="百度地图" name="second">
+          <div id="mapbox">
+            <baidu-map
+              :center="center"
+              :zoom="zoom"
+              :scroll-wheel-zoom="true"
+              class="baidu-m"
+              @ready="handler"
+              :mapStyle="mapStyle"
+            >
+              <!-- 必须给容器指高度，不然地图将显示在一个高度为0的容器中，看不到 -->
+              <bm-map-type
+                :map-types="['BMAP_NORMAL_MAP', 'BMAP_HYBRID_MAP']"
+                anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+              ></bm-map-type>
+              <!-- 右上角比例尺切换 -->
+              <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
+              <!-- 标记 -->、
+              <bm-marker
+                :position="{ lng: 116.404, lat: 39.915 }"
+                :dragging="true"
+                animation="BMAP_ANIMATION_BOUNCE"
+              >
+              </bm-marker>
+              <bm-local-search
+                :keyword="keyword"
+                :location="location"
+                :auto-viewport="autoViewport"
+                :panel="panel"
+                :select-first-result="selectFirstResult"
+                @searchcomplete="searchcomplete"
+              ></bm-local-search>
+              <bm-control>
+                <bm-auto-complete
+                  v-model="keyword"
+                  :sugStyle="{ zIndex: 999999 }"
+                >
+                  <el-input
+                    v-model="mapvalue"
+                    placeholder="请搜索活动地址"
+                    size="mini"
+                    clearable
+                  ></el-input>
+                </bm-auto-complete>
+              </bm-control>
+            </baidu-map>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
     <div class="total-title">
       <p>设备类型分布</p>
       <ul>
@@ -72,98 +126,291 @@
 <script>
 import './china'
 export default {
+  name: 'mapbox',
   data () {
     return {
-      myChart: null
+      myChart: null,
+      shouxuan: 'first',
+      // 地图
+      center: { lng: 0, lat: 0 }, // 经纬度
+      zoom: 5, // 地图展示级别
+      mapvalue: '',
+      markers: [{}],
+      show: false,
+      // infoMarkers: [1, 23, 3, 5435, 6567, 45, 214],
+      // marker: { lng: null, lat: null },
+      search: { lng: null, lat: null },
+      panel: false,
+      keyword: '',
+      selectFirstResult: true,
+      location: '深圳',
+      autoViewport: true,
+      // 地图颜色
+      mapStyle: {
+        styleJson: [
+          {
+            'featureType': 'water',
+            'elementType': 'all',
+            'stylers': {
+              'color': '#021019'
+            }
+          },
+          {
+            'featureType': 'highway',
+            'elementType': 'geometry.fill',
+            'stylers': {
+              'color': '#000000'
+            }
+          },
+          {
+            'featureType': 'highway',
+            'elementType': 'geometry.stroke',
+            'stylers': {
+              'color': '#147a92'
+            }
+          },
+          {
+            'featureType': 'arterial',
+            'elementType': 'geometry.fill',
+            'stylers': {
+              'color': '#000000'
+            }
+          },
+          {
+            'featureType': 'arterial',
+            'elementType': 'geometry.stroke',
+            'stylers': {
+              'color': '#0b3d51'
+            }
+          },
+          {
+            'featureType': 'local',
+            'elementType': 'geometry',
+            'stylers': {
+              'color': '#000000'
+            }
+          },
+          {
+            'featureType': 'land',
+            'elementType': 'all',
+            'stylers': {
+              'color': '#08304b'
+            }
+          },
+          {
+            'featureType': 'railway',
+            'elementType': 'geometry.fill',
+            'stylers': {
+              'color': '#000000'
+            }
+          },
+          {
+            'featureType': 'railway',
+            'elementType': 'geometry.stroke',
+            'stylers': {
+              'color': '#08304b'
+            }
+          },
+          {
+            'featureType': 'subway',
+            'elementType': 'geometry',
+            'stylers': {
+              'lightness': -70
+            }
+          },
+          {
+            'featureType': 'building',
+            'elementType': 'geometry.fill',
+            'stylers': {
+              'color': '#000000'
+            }
+          },
+          {
+            'featureType': 'all',
+            'elementType': 'labels.text.fill',
+            'stylers': {
+              'color': '#857f7f'
+            }
+          },
+          {
+            'featureType': 'all',
+            'elementType': 'labels.text.stroke',
+            'stylers': {
+              'color': '#000000'
+            }
+          },
+          {
+            'featureType': 'building',
+            'elementType': 'geometry',
+            'stylers': {
+              'color': '#022338'
+            }
+          },
+          {
+            'featureType': 'green',
+            'elementType': 'geometry',
+            'stylers': {
+              'color': '#062032'
+            }
+          },
+          {
+            'featureType': 'boundary',
+            'elementType': 'all',
+            'stylers': {
+              'color': '#1e1c1c'
+            }
+          },
+          {
+            'featureType': 'manmade',
+            'elementType': 'geometry',
+            'stylers': {
+              'color': '#022338'
+            }
+          },
+          {
+            'featureType': 'poi',
+            'elementType': 'all',
+            'stylers': {
+              'visibility': 'off'
+            }
+          },
+          {
+            'featureType': 'all',
+            'elementType': 'labels.icon',
+            'stylers': {
+              'visibility': 'off'
+            }
+          },
+          {
+            'featureType': 'all',
+            'elementType': 'labels.text.fill',
+            'stylers': {
+              'color': '#2da0c6',
+              'visibility': 'on'
+            }
+          }
+
+        ]
+      }
+
     }
   },
   methods: {
+    handleClick (tab, event) {
+      console.log(tab, event)
+    },
+    handler ({ BMap, map }) {
+      console.log(BMap, map)
+      this.center.lng = 70.034564
+      this.center.lat = 48.96456
+      this.zoom = this.zoom
+    },
+    // getClickInfo (e) {
+    //   console.log(e)
+    //   this.markers.push({ local: { lng: e.point.lng, lat: e.point.lat }, show: false })
+    // },
+    /* rmInfo () {
+      this.markers.splice(this.markers[this.markers.length - 1], 1)
+    }, */
+    locationSuccess (e) { // 百度地图定位完成后
+      console.log(e)
+      this.search.lng = e.point.lng
+      this.search.lat = e.point.lat
+    },
+    searchcomplete (e) { // 百度地图搜索框完成之后
+      console.log(e)
+      if (e) {
+        this.search.lng = ''
+        this.search.lat = ''
+      }
+    },
     // 火警圆圈
     initFireEcharts () {
       // 初始化
-      this.myChart = this.echarts.init(document.querySelector('#fire-quan'))
-      let option = { tooltip: {
-        show: false
-      },
-      series: [{
-        type: 'pie',
-        radius: ['50%', '80%'],
-        label: {
-          normal: {
-            position: 'center'
-          }
+      this.myChart1 = this.echarts.init(document.querySelector('#fire-quan'))
+      let option = {
+        tooltip: {
+          show: false
         },
-        hoverAnimation: false,
-        data: [{
-          value: 50,
-          itemStyle: {
-            normal: {
-              color: {
-                type: 'linear',
-                x: 1,
-                y: 0,
-                x2: 0,
-                y2: 0.05,
-                colorStops: [{
-                  offset: 0,
-                  color: '#f87d29' // 0% 处的颜色
-                }, {
-                  offset: 0.4,
-                  color: '#f6f511' // 100% 处的颜色
-                }, {
-                  offset: 0.1,
-                  color: '#f6f511' // 100% 处的颜色
-                }, {
-                  offset: 1,
-                  color: '#f87d29' // 100% 处的颜色
-                }],
-                globalCoord: false // 缺省为 false
-              }
-            }
-          }
-        },
-
-        {
-          value: 50,
-          name: '占位',
+        series: [{
+          type: 'pie',
+          radius: ['50%', '80%'],
           label: {
             normal: {
-              formatter: '火警',
-              textStyle: {
-                color: '#fff',
-                fontSize: 16
+              position: 'center'
+            }
+          },
+          hoverAnimation: false,
+          data: [{
+            value: 50,
+            itemStyle: {
+              normal: {
+                color: {
+                  type: 'linear',
+                  x: 1,
+                  y: 0,
+                  x2: 0,
+                  y2: 0.05,
+                  colorStops: [{
+                    offset: 0,
+                    color: '#f87d29' // 0% 处的颜色
+                  }, {
+                    offset: 0.4,
+                    color: '#f6f511' // 100% 处的颜色
+                  }, {
+                    offset: 0.1,
+                    color: '#f6f511' // 100% 处的颜色
+                  }, {
+                    offset: 1,
+                    color: '#f87d29' // 100% 处的颜色
+                  }],
+                  globalCoord: false // 缺省为 false
+                }
               }
             }
           },
-          itemStyle: {
-            normal: {
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                  offset: 0,
-                  color: 'red' // 0% 处的颜色
-                },
-                {
-                  offset: 1,
-                  color: 'red' // 100% 处的颜色
+
+          {
+            value: 50,
+            name: '占位',
+            label: {
+              normal: {
+                formatter: '火警',
+                textStyle: {
+                  color: '#fff',
+                  fontSize: 16
                 }
-                ],
-                globalCoord: false // 缺省为 false
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: {
+                  type: 'linear',
+                  x: 0,
+                  y: 0,
+                  x2: 0,
+                  y2: 1,
+                  colorStops: [{
+                    offset: 0,
+                    color: 'red' // 0% 处的颜色
+                  },
+                  {
+                    offset: 1,
+                    color: 'red' // 100% 处的颜色
+                  }
+                  ],
+                  globalCoord: false // 缺省为 false
+                }
               }
             }
-          }
+          }]
         }]
-      }]
       }
-      this.myChart.setOption(option)
+      this.myChart1.setOption(option)
     },
     // 事件比例
     initEventEcharts () {
-      this.myChart = this.echarts.init(document.querySelector('#event-zzt'))
+      this.myChart2 = this.echarts.init(document.querySelector('#event-zzt'))
       let colorArray = [
         {
           top: '#4826ac', // 红
@@ -295,11 +542,11 @@ export default {
 
         ]
       }
-      this.myChart.setOption(option)
+      this.myChart2.setOption(option)
     },
     // 中国地图
     initChinaMap () {
-      this.myChart = this.echarts.init(document.querySelector('#china-map'))
+      this.myChart3 = this.echarts.init(document.querySelector('#china-map'))
       let option = {
         // backgroundColor: '#333',
         geo: {
@@ -375,7 +622,7 @@ export default {
 
         ]
       }
-      this.myChart.setOption(option)
+      this.myChart3.setOption(option)
     }
   },
   // 页面打开时初始化 echart
@@ -383,10 +630,15 @@ export default {
     this.initFireEcharts()
     this.initEventEcharts()
     this.initChinaMap()
+    window.addEventListener('resize', () => {
+      this.myChart1.resize()
+      this.myChart2.resize()
+      this.myChart3.resize()
+    })
   }
 }
 </script>
-<style lang="less" scoped>
+<style lang="less" scoped >
 .eq-main {
   div {
     box-sizing: border-box;
@@ -394,12 +646,61 @@ export default {
   width: 100%;
   height: 100%;
   position: relative;
-  #china-map {
+  /deep/.map {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: transparent;
-    z-index: 3;
+    .el-tabs {
+      position: absolute;
+      .el-tabs__header {
+        margin-top: 20/96rem;
+        z-index: 100;
+        left: 60%;
+        background-color: #08304b;
+        border-radius: 4px 5px 0 0;
+        color: #fff;
+        .el-tabs__item {
+          color: #fff;
+          &.is-active {
+            color: #0094ff;
+          }
+        }
+      }
+    }
+    .el-tab-pane {
+      height: 65%;
+      #mapbox {
+        width: 435/96rem;
+        height: 100%;
+        margin-left: 50/96rem;
+        margin-top: 50/96rem;
+        .baidu-m {
+          height: 100%;
+        }
+        .el-input__inner {
+          background-color: transparent;
+          color: #fff;
+        }
+      }
+    }
+    .el-tabs__header {
+      position: absolute;
+    }
+    .el-tabs--top {
+      width: 100%;
+      height: 100%;
+    }
+    .el-tabs__content {
+      width: 100%;
+      height: 100%;
+    }
+    #china-map {
+      position: absolute;
+      width: 550/96rem;
+      height: 100%;
+      background-color: transparent;
+      z-index: 99;
+    }
   }
   .total-title {
     position: absolute;

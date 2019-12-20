@@ -8,13 +8,13 @@
 export default {
   data () {
     return {
-      myChart: null
+      totalec: null
     }
   },
   methods: {
     initEcharts () {
       // 初始化
-      this.myChart = this.echarts.init(document.querySelector('#total'))
+      this.totalec = this.echarts.init(document.querySelector('#total'))
       let option = {
         title: {
           text: '设备上报监控信息统计',
@@ -112,7 +112,10 @@ export default {
         tooltip: {
         }
       }
-      this.myChart.setOption(option)
+      this.totalec.setOption(option)
+      window.addEventListener('resize', () => {
+        this.totalec.resize()
+      })
     }
   },
   // 页面打开时初始化 echart

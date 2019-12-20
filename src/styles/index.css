@@ -67,6 +67,17 @@ body {
 .clearfix {
   *zoom: 1;
 }
+.tangram-suggestion {
+  overflow: hidden;
+}
+.tangram-suggestion td {
+  white-space: nowrap;
+  line-height: 10%;
+}
+.anchorBL {
+  display: none;
+  visibility: hidden;
+}
 @media (width: 1200px) {
   font-size: 120px;
 }

@@ -8,13 +8,13 @@
 export default {
   data () {
     return {
-      myChart: null
+      hiddenec: null
     }
   },
   methods: {
     initEcharts () {
       // 初始化
-      this.myChart = this.echarts.init(document.querySelector('#hidden'))
+      this.hiddenec = this.echarts.init(document.querySelector('#hidden'))
       let option = {
         title: {
           text: '最近30天隐患数量',
@@ -48,6 +48,7 @@ export default {
             }
           },
           axisLabel: {
+            interval: 1,
             textStyle: {
               color: '#fff',
               fontSize: 10
@@ -118,7 +119,10 @@ export default {
         tooltip: {
         }
       }
-      this.myChart.setOption(option)
+      this.hiddenec.setOption(option)
+      window.addEventListener('resize', () => {
+        this.hiddenec.resize()
+      })
     }
   },
   // 页面打开时初始化 echart

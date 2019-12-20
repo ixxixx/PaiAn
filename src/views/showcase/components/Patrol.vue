@@ -8,13 +8,13 @@
 export default {
   data () {
     return {
-      myChart: null
+      patrolec: null
     }
   },
   methods: {
     initEcharts () {
       // 初始化
-      this.myChart = this.echarts.init(document.querySelector('#patrol'))
+      this.patrolec = this.echarts.init(document.querySelector('#patrol'))
       let colorArray = [
         {
           top: 'red', // 红
@@ -38,10 +38,10 @@ export default {
           sublink: 'http://www.baidu.com', // 副标题超链接
           x: '10px',
           y: '10px',
-          itemGap: 20,
+          itemGap: 10,
           textStyle: {
             color: '#fff',
-            fontSize: 16
+            fontSize: 15
           },
           subtextStyle: {
             color: '#fff',
@@ -159,7 +159,10 @@ export default {
 
         ]
       }
-      this.myChart.setOption(option)
+      this.patrolec.setOption(option)
+      window.addEventListener('resize', () => {
+        this.patrolec.resize()
+      })
     }
   },
   // 页面打开时初始化 echart

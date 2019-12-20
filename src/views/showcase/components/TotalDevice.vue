@@ -1,5 +1,5 @@
 <template>
-  <div id="container">
+  <div id="totalD">
     <!-- 这是用来渲染 echars -->
   </div>
 </template>
@@ -8,14 +8,14 @@
 export default {
   data () {
     return {
-      myChart: null
+      myChart4: null
     }
   },
   methods: {
     // 折线图
     initEcharts () {
       // 初始化
-      this.myChart = this.echarts.init(document.querySelector('#container'))
+      this.myChart4 = this.echarts.init(document.querySelector('#totalD'))
       let option = {
         title: {
           text: '设备总数排行',
@@ -109,7 +109,10 @@ export default {
         tooltip: {
         }
       }
-      this.myChart.setOption(option)
+      this.myChart4.setOption(option)
+      window.addEventListener('resize', () => {
+        this.myChart4.resize()
+      })
     }
   },
   // 页面打开时初始化 echart
@@ -123,7 +126,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-#container {
+#totalD {
   background-color: transparent;
 }
 </style>

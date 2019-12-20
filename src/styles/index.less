@@ -1,6 +1,9 @@
-body, html, #app {
-  height: 100%;
+body,
+html,
+#app {
+    height: 100%;
 }
+
 /* 单独作为一个文件存在的CSS初始化代码 */
 /* 哪个页面需要初始化,就直接导入即可 */
 
@@ -31,7 +34,8 @@ footer {
 
 div {
     box-sizing: border-box;
-  }
+}
+
 li {
     list-style: none;
 }
@@ -75,6 +79,22 @@ body {
 .clearfix {
     *zoom: 1;
 }
+
+// 限制搜索框内容显示
+.tangram-suggestion {
+    overflow: hidden;
+
+    td {
+        white-space: nowrap;
+        line-height: 10%
+    }
+}
+// 去除地图左下角信息
+.anchorBL{
+    display: none;
+    visibility: hidden;
+}
+
 @media (width:1200px) {
     font-size: 120px;
 }
