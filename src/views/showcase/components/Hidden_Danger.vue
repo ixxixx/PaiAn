@@ -8,7 +8,9 @@
 export default {
   data () {
     return {
-      hiddenec: null
+      hiddenec: null,
+      dhkshow: true,
+      name: ''
     }
   },
   methods: {
@@ -120,14 +122,18 @@ export default {
         }
       }
       this.hiddenec.setOption(option)
-      window.addEventListener('resize', () => {
-        this.hiddenec.resize()
+      this.hiddenec.on('click', (param) => {
+        this.name = param.name
+        this.$emit('hiddenec', this.dhkshow, this.name)
       })
     }
   },
   // 页面打开时初始化 echart
   mounted () {
     this.initEcharts()
+    window.addEventListener('resize', () => {
+      this.hiddenec.resize()
+    })
   }
   // vue 的生命周期的问题；
   //  created: 没有生成 dom 初始化了 data & method

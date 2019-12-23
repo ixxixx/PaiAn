@@ -18,13 +18,11 @@
               <!-- 必须给容器指高度，不然地图将显示在一个高度为0的容器中，看不到 -->
               <bm-map-type
                 :map-types="['BMAP_NORMAL_MAP', 'BMAP_HYBRID_MAP']"
-                anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+                anchor="BMAP_ANCHOR_TOP_LEFT"
               ></bm-map-type>
-              <!-- 右上角比例尺切换 -->
-              <bm-navigation anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-navigation>
               <!-- 标记 -->、
               <bm-marker
-                :position="{ lng: 116.404, lat: 39.915 }"
+                :position="{ lng: 102.73333, lat: 25.05 }"
                 :dragging="true"
                 animation="BMAP_ANIMATION_BOUNCE"
               >
@@ -43,6 +41,7 @@
                   :sugStyle="{ zIndex: 999999 }"
                 >
                   <el-input
+                    style="top:5px;left:100px"
                     v-model="mapvalue"
                     placeholder="请搜索活动地址"
                     size="mini"
@@ -56,8 +55,8 @@
       </el-tabs>
     </div>
     <div class="total-title">
-      <p>设备类型分布</p>
       <ul>
+        <li @click="sb">设备类型分布</li>
         <li>全部</li>
         <li>电器安全</li>
         <li>燃气探测警报</li>
@@ -65,7 +64,8 @@
         <li>物联网关</li>
       </ul>
     </div>
-    <div class="nav">
+    <i @click="navB" v-show="!navShow" class="el-icon-circle-plus navjia"></i>
+    <div class="nav" v-show="navShow" @dblclick="navS">
       <ul class="ul-six">
         <li>
           <i></i>
@@ -92,8 +92,14 @@
           <p>NB</p>
         </li>
       </ul>
+      <i @click="navS" class="el-icon-error" v-show="navShow"></i>
     </div>
-    <div class="sidebar">
+    <i
+      @click="sidebarB"
+      v-show="!sidebarShow"
+      class="el-icon-circle-plus sidebarjia"
+    ></i>
+    <div class="sidebar" v-show="sidebarShow" @dblclick="sidebarS">
       <div class="sidebar-title">事件状态</div>
       <div class="sidebar-one notes">
         <div class="yuan"><p>火警</p></div>
@@ -106,20 +112,40 @@
           <p class="mt3">事件<br />比例</p>
         </div>
       </div>
+      <i @click="sidebarS" class="el-icon-error" v-show="sidebarShow"></i>
     </div>
-    <div class="footer-quan">
-      <div id="fire-quan"></div>
-      <div class="fire-notes">
-        <ul>
-          <li>这是数据的展示</li>
-          <li>这是数据的展示</li>
-          <li>这是数据的展示</li>
-          <li>这是数据的展示</li>
-        </ul>
+    <i
+      @click="footerB"
+      v-show="!footquanShow"
+      class="el-icon-circle-plus footerjia"
+    ></i>
+    <div class="footer-quan" v-show="footquanShow" @dblclick="footerS">
+      <div class="fireInfo">
+        <div id="fire-quan"></div>
+        <div class="fire-notes">
+          <ul>
+            <li>这是数据的展示</li>
+            <li>这是数据的展示</li>
+            <li>这是数据的展示</li>
+          </ul>
+        </div>
       </div>
+      <div class="faultInfo"></div>
       <!-- 事件柱状图 -->
       <div id="event-zzt"></div>
+      <i @click="footerS" class="el-icon-error" v-show="footquanShow"></i>
     </div>
+    <!-- <div class="dome-cs" v-show="demoshow"></div> -->
+    <el-dialog
+      :title="location + '火警'"
+      :visible.sync="demoshow"
+      width="30%">
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="demoshow = false">取 消</el-button>
+        <el-button type="primary" @click="demoshow = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -136,7 +162,9 @@ export default {
       zoom: 5, // 地图展示级别
       mapvalue: '',
       markers: [{}],
-      show: false,
+      sidebarShow: true,
+      footquanShow: true,
+      navShow: true,
       // infoMarkers: [1, 23, 3, 5435, 6567, 45, 214],
       // marker: { lng: null, lat: null },
       search: { lng: null, lat: null },
@@ -145,6 +173,7 @@ export default {
       selectFirstResult: true,
       location: '深圳',
       autoViewport: true,
+      demoshow: false,
       // 地图颜色
       mapStyle: {
         styleJson: [
@@ -157,20 +186,6 @@ export default {
           },
           {
             'featureType': 'highway',
-            'elementType': 'geometry.fill',
-            'stylers': {
-              'color': '#000000'
-            }
-          },
-          {
-            'featureType': 'highway',
-            'elementType': 'geometry.stroke',
-            'stylers': {
-              'color': '#147a92'
-            }
-          },
-          {
-            'featureType': 'arterial',
             'elementType': 'geometry.fill',
             'stylers': {
               'color': '#000000'
@@ -202,20 +217,6 @@ export default {
             'elementType': 'geometry.fill',
             'stylers': {
               'color': '#000000'
-            }
-          },
-          {
-            'featureType': 'railway',
-            'elementType': 'geometry.stroke',
-            'stylers': {
-              'color': '#08304b'
-            }
-          },
-          {
-            'featureType': 'subway',
-            'elementType': 'geometry',
-            'stylers': {
-              'lightness': -70
             }
           },
           {
@@ -273,29 +274,15 @@ export default {
             'stylers': {
               'visibility': 'off'
             }
-          },
-          {
-            'featureType': 'all',
-            'elementType': 'labels.icon',
-            'stylers': {
-              'visibility': 'off'
-            }
-          },
-          {
-            'featureType': 'all',
-            'elementType': 'labels.text.fill',
-            'stylers': {
-              'color': '#2da0c6',
-              'visibility': 'on'
-            }
           }
-
         ]
       }
-
     }
   },
   methods: {
+    sb () {
+      console.log(123)
+    },
     handleClick (tab, event) {
       console.log(tab, event)
     },
@@ -407,6 +394,10 @@ export default {
         }]
       }
       this.myChart1.setOption(option)
+      this.myChart1.on('click', (param) => {
+        console.log(param.name)
+        this.demoshow = true
+      })
     },
     // 事件比例
     initEventEcharts () {
@@ -448,9 +439,9 @@ export default {
           formatter: '{b}:{c}'
         },
         grid: {
-          left: '15%',
+          left: '5%',
           top: '20%',
-          right: '15%',
+          right: '20%',
           bottom: '1%',
           containLabel: true
         },
@@ -548,13 +539,15 @@ export default {
     initChinaMap () {
       this.myChart3 = this.echarts.init(document.querySelector('#china-map'))
       let option = {
+        tooltip: {
+        },
         // backgroundColor: '#333',
         geo: {
-          left: 15,
+          left: 80,
           map: 'china',
           roam: true,
           zoom: 1,
-          aspectScale: 0.75, // 长宽比
+          aspectScale: 0.8, // 长宽比
           itemStyle: {
             normal: {
               areaColor: {
@@ -623,7 +616,29 @@ export default {
         ]
       }
       this.myChart3.setOption(option)
+    },
+    // 侧边栏的隐藏
+    sidebarS () {
+      this.sidebarShow = false
+    },
+    sidebarB () {
+      this.sidebarShow = true
+    },
+    // 底部的隐藏
+    footerS () {
+      this.footquanShow = false
+    },
+    footerB () {
+      this.footquanShow = true
+    },
+    // 右上的隐藏
+    navS () {
+      this.navShow = false
+    },
+    navB () {
+      this.navShow = true
     }
+
   },
   // 页面打开时初始化 echart
   mounted () {
@@ -653,14 +668,16 @@ export default {
     .el-tabs {
       position: absolute;
       .el-tabs__header {
-        margin-top: 20/96rem;
-        z-index: 100;
-        left: 60%;
+        margin-top: 9/96rem;
+        z-index: 10;
+        left: 80%;
         background-color: #08304b;
         border-radius: 4px 5px 0 0;
         color: #fff;
         .el-tabs__item {
           color: #fff;
+          height: 20/96rem;
+          line-height: 20/96rem;
           &.is-active {
             color: #0094ff;
           }
@@ -668,14 +685,18 @@ export default {
       }
     }
     .el-tab-pane {
-      height: 65%;
+      width: 100%;
+      height: 100%;
+      padding-bottom: 30/96rem;
       #mapbox {
-        width: 435/96rem;
+        width: 100%;
         height: 100%;
-        margin-left: 50/96rem;
-        margin-top: 50/96rem;
+        margin-top: 30/96rem;
         .baidu-m {
           height: 100%;
+          .BMap_mask {
+            border: 1px solid #ccc;
+          }
         }
         .el-input__inner {
           background-color: transparent;
@@ -696,31 +717,36 @@ export default {
     }
     #china-map {
       position: absolute;
-      width: 550/96rem;
+      width: 100%;
       height: 100%;
       background-color: transparent;
-      z-index: 99;
+      // border: 1px solid rgb(44, 106, 177);
+      box-shadow: 0px 0px 5/96rem #1176a7 inset;
     }
   }
   .total-title {
     position: absolute;
-    top: 10/96rem;
+    top: 0;
     left: 10/96rem;
     color: #fff;
-    p {
-      font-size: 14/96rem;
-    }
     li {
       float: left;
       margin-top: 10/96rem;
       margin-right: 14/96rem;
       font-size: 8/96rem;
+      line-height: 12/96rem;
+      &:nth-child(1) {
+        font-size: 12/96rem;
+      }
+      &:hover {
+        cursor:pointer
+      }
     }
   }
   .nav {
     position: absolute;
     top: 30/96rem;
-    right: -10/96rem;
+    right: 0;
     width: 25%;
     height: 20%;
     .ul-six {
@@ -735,9 +761,12 @@ export default {
         text-align: center;
         color: #fff;
         font-size: 6/96rem;
+        &:hover {
+        cursor:pointer
+      }
         i {
           display: block;
-          margin: 10% auto;
+          margin: 10% auto 0;
           width: 55%;
           height: 60%;
           background-color: red;
@@ -749,17 +778,17 @@ export default {
   .sidebar {
     background-color: transparent;
     position: absolute;
-    top: 40%;
+    top: 38%;
     right: 5/96rem;
     width: 150/96rem;
-    height: 138/96rem;
+    height: 144/96rem;
     .sidebar-title {
       width: 100%;
       height: 18/96rem;
       font-size: 12/96rem;
       color: #fff;
       padding-left: 18/96rem;
-      background-color: #ff00f7;
+      background-color: rgba(212, 63, 180, 0.7);
     }
     .notes {
       width: 100%;
@@ -779,7 +808,7 @@ export default {
         color: #fff;
         font-size: 10/96rem;
         text-align: center;
-        margin-top: 12/96rem;
+        margin-top: 10/96rem;
       }
     }
     .sidebar-two {
@@ -788,48 +817,89 @@ export default {
     .sidebar-three {
       background: rgba(66, 32, 145, 0.3);
       .mt3 {
-        margin-top: 6/96rem;
+        margin-top: 4/96rem;
       }
     }
+  }
+  // 显示按钮
+  .el-icon-circle-plus {
+    font-size: 10/96rem;
+    color: #ccc;
+    position: absolute;
+    right: 2/96rem;
+  }
+  .sidebarjia {
+    top: 40%;
+    right: 8/96rem;
+  }
+  .footerjia {
+    top: 75%;
+  }
+  .navjia {
+    top: 32/96rem;
+  }
+  // 隐藏点
+  .el-icon-error {
+    font-size: 10/96rem;
+    color: #fff;
+    position: absolute;
+    top: 2/96rem;
+    right: 2/96rem;
   }
   .footer-quan {
     position: absolute;
     bottom: 0;
     width: 100%;
     height: 25%;
-    background-color: transparent;
-    #fire-quan {
-      position: absolute;
-      top: 5%;
-      left: 8%;
-      width: 15%;
-      height: 40%;
-      background-color: transparent;
-    }
-    .fire-notes {
-      position: absolute;
-      bottom: 0;
+    // background-color: transparent;
+    .fireInfo {
       width: 30%;
-      height: 55%;
-      background-color: transparent;
-      ul {
+      height: 100%;
+      background-color: rgba(173, 172, 171, 0.2);
+      position: absolute;
+      #fire-quan {
+        position: absolute;
+        top: 5%;
+        left: 40%;
+        width: 25%;
+        height: 40%;
+        background-color: transparent;
+      }
+      .fire-notes {
+        position: absolute;
+        bottom: 0;
         width: 100%;
-        height: 100%;
-        li {
-          font-size: 8/96rem;
-          color: #fff;
-          line-height: 2;
-          overflow: hidden;
+        height: 55%;
+        overflow: hidden;
+        background-color: transparent;
+        ul {
+          width: 100%;
+          height: 100%;
+          li {
+            font-size: 8/96rem;
+            color: #fff;
+            line-height: 2;
+            overflow: hidden;
+          }
         }
       }
     }
+    .faultInfo {
+      width: 30%;
+      height: 100%;
+      background-color: rgba(173, 172, 171, 0.2);
+      position: absolute;
+      left: 35%;
+    }
     #event-zzt {
+      opacity: 0.2;
       position: absolute;
       width: 30%;
       height: 100%;
       right: 0;
       bottom: 0;
-      background-color: transparent;
+      // background-color: transparent;
+      background-color: rgba(173, 172, 171, 0.2);
     }
   }
 }

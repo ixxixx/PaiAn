@@ -51,7 +51,8 @@ import moment from 'moment'
 export default {
   data () {
     return {
-      nowTime: new Date() // 初始化时间
+      nowTime: new Date(), // 初始化时间
+      Allture: true
     }
   },
   components: {

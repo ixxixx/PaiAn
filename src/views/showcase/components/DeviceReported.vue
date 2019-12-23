@@ -1,5 +1,5 @@
 <template>
-  <div id="total">
+  <div id="report">
     <!-- 这是用来渲染 echars -->
   </div>
 </template>
@@ -8,13 +8,15 @@
 export default {
   data () {
     return {
-      totalec: null
+      reportec: null,
+      dhkshow: true,
+      name: ''
     }
   },
   methods: {
     initEcharts () {
       // 初始化
-      this.totalec = this.echarts.init(document.querySelector('#total'))
+      this.reportec = this.echarts.init(document.querySelector('#report'))
       let option = {
         title: {
           text: '设备上报监控信息统计',
@@ -112,15 +114,21 @@ export default {
         tooltip: {
         }
       }
-      this.totalec.setOption(option)
-      window.addEventListener('resize', () => {
-        this.totalec.resize()
+      this.reportec.setOption(option)
+      this.reportec.on('click', (param) => {
+        // this.dhkshow = true
+        console.log(param)
+        this.name = param.name
+        this.$emit('reportec', this.dhkshow, this.name)
       })
     }
   },
   // 页面打开时初始化 echart
   mounted () {
     this.initEcharts()
+    window.addEventListener('resize', () => {
+      this.reportec.resize()
+    })
   }
   // vue 的生命周期的问题；
   //  created: 没有生成 dom 初始化了 data & method
@@ -129,7 +137,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-#total {
+#report {
   background-color: transparent;
 }
 </style>

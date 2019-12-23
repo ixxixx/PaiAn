@@ -8,7 +8,9 @@
 export default {
   data () {
     return {
-      patrolec: null
+      patrolec: null,
+      dhkshow: true,
+      name: ''
     }
   },
   methods: {
@@ -51,12 +53,12 @@ export default {
         // backgroundColor: '#0E2A43',
         tooltip: {
           show: true,
-          formatter: '{b}:{c}'
+          formatter: '{c}'
         },
         grid: {
           left: '5%',
           top: '20%',
-          right: '15%',
+          right: '20%',
           bottom: '1%',
           containLabel: true
         },
@@ -153,21 +155,25 @@ export default {
             }
           },
           barGap: '0%',
-          barCategoryGap: '65%',
+          barCategoryGap: '55%',
           data: [9900, 7723, 7900, 9821]
         }
 
         ]
       }
       this.patrolec.setOption(option)
-      window.addEventListener('resize', () => {
-        this.patrolec.resize()
+      this.patrolec.on('click', (param) => {
+        this.name = param.name
+        this.$emit('patrolec', this.dhkshow, this.name)
       })
     }
   },
   // 页面打开时初始化 echart
   mounted () {
     this.initEcharts()
+    window.addEventListener('resize', () => {
+      this.patrolec.resize()
+    })
   }
   // vue 的生命周期的问题；
   //  created: 没有生成 dom 初始化了 data & method

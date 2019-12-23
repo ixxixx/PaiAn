@@ -8,14 +8,20 @@
 export default {
   data () {
     return {
-      myChart4: null
+      totalec: null,
+      dhkshow: true,
+      name: ''
     }
   },
+
   methods: {
     // 折线图
+    // clickShow () {
+
+    // },
     initEcharts () {
       // 初始化
-      this.myChart4 = this.echarts.init(document.querySelector('#totalD'))
+      this.totalec = this.echarts.init(document.querySelector('#totalD'))
       let option = {
         title: {
           text: '设备总数排行',
@@ -109,15 +115,20 @@ export default {
         tooltip: {
         }
       }
-      this.myChart4.setOption(option)
-      window.addEventListener('resize', () => {
-        this.myChart4.resize()
+      this.totalec.setOption(option)
+      this.totalec.on('click', (param) => {
+        // this.dhkshow = true
+        this.name = param.name
+        this.$emit('totalec', this.dhkshow, this.name)
       })
     }
   },
   // 页面打开时初始化 echart
   mounted () {
     this.initEcharts()
+    window.addEventListener('resize', () => {
+      this.totalec.resize()
+    })
   }
   // vue 的生命周期的问题；
   //  created: 没有生成 dom 初始化了 data & method

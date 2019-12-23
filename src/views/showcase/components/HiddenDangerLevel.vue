@@ -8,7 +8,9 @@
 export default {
   data () {
     return {
-      levelec: null
+      levelec: null,
+      dhkshow: true,
+      name: ''
     }
   },
   methods: {
@@ -135,14 +137,18 @@ export default {
         ]
       }
       this.levelec.setOption(option)
-      window.addEventListener('resize', () => {
-        this.levelec.resize()
+      this.levelec.on('click', (param) => {
+        this.name = param.name
+        this.$emit('levelec', this.dhkshow, this.name)
       })
     }
   },
   // 页面打开时初始化 echart
   mounted () {
     this.initEcharts()
+    window.addEventListener('resize', () => {
+      this.levelec.resize()
+    })
   }
   // vue 的生命周期的问题；
   //  created: 没有生成 dom 初始化了 data & method

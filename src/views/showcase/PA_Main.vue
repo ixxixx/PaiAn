@@ -2,9 +2,9 @@
   <el-row>
     <el-col :span="4">
       <div class="box">
-        <TotalDevice class="fix-ge"></TotalDevice>
-        <DeviceReported class="fix-ge"></DeviceReported>
-        <News class="fix-ge"></News>
+        <TotalDevice v-show="sixShow" class="fix-ge" @totalec="tcShow"></TotalDevice>
+        <DeviceReported v-show="sixShow" class="fix-ge" @reportec="tcShow"></DeviceReported>
+        <News v-show="sixShow" class="fix-ge"></News>
       </div>
     </el-col>
     <el-col :span="16">
@@ -14,11 +14,21 @@
     </el-col>
     <el-col :span="4">
       <div class="box">
-        <HiddenDanger class="fix-ge"></HiddenDanger>
-        <HiddenDangerLevel class="fix-ge"></HiddenDangerLevel>
-        <Patrol class="fix-ge"></Patrol>
+        <HiddenDanger v-show="sixShow" class="fix-ge" @hiddenec="tcShow"></HiddenDanger>
+        <HiddenDangerLevel v-show="sixShow" class="fix-ge" @levelec="tcShow"></HiddenDangerLevel>
+        <Patrol v-show="sixShow" class="fix-ge" @patrolec="tcShow"></Patrol>
       </div>
     </el-col>
+    <!-- 6盒子窗口事件 -->
+    <el-switch v-model="sixShow"> </el-switch>
+    <!-- 对话框 -->
+    <el-dialog title="这是弹出的内容" :visible.sync="tcshow" width="30%">
+      <span>{{ this.name }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="tcshow = false">取 消</el-button>
+        <el-button type="primary" @click="tcshow = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </el-row>
 </template>
 <script>
@@ -30,6 +40,13 @@ import News from './components/News'
 import Patrol from './components/Patrol'
 import DeviceDistribution from './components/DeviceDistribution'
 export default {
+  data () {
+    return {
+      sixShow: true,
+      tcshow: null,
+      name: ''
+    }
+  },
   components: {
     TotalDevice, // 设备总数
     DeviceReported, // 设备报告
@@ -38,6 +55,15 @@ export default {
     News, // 事件
     Patrol, // 异常
     DeviceDistribution // 设备分布
+  },
+  methods: {
+    tcShow (dhkshow, name) {
+      this.tcshow = dhkshow
+      this.name = name
+      console.log(this.tcshow)
+      console.log(this.name)
+    }
+
   },
   mounted () {
     // window.onresize = () => {
@@ -52,6 +78,11 @@ export default {
 .el-row {
   width: 100%;
   height: 100%;
+  /deep/.el-switch {
+    position: absolute;
+    top: -45/96rem;
+    right: 5/96rem;
+  }
   .el-col {
     height: 100%;
     .box {
