@@ -142,9 +142,9 @@ export default {
         }
       }
       .title {
-        font-size: 26/96rem;
+        font-size: 25/96rem;
         text-align: center;
-        line-height: 2;
+        line-height: 1.8;
       }
       .box {
         position: relative;

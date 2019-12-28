@@ -78,6 +78,9 @@ body {
   display: none;
   visibility: hidden;
 }
+::-webkit-scrollbar {
+  visibility: hidden;
+}
 @media (width: 1200px) {
   font-size: 120px;
 }

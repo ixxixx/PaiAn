@@ -155,7 +155,7 @@ export default {
             }
           },
           barGap: '0%',
-          barCategoryGap: '55%',
+          barCategoryGap: '65%',
           data: [9900, 7723, 7900, 9821]
         }
 

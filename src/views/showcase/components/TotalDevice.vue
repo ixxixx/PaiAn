@@ -22,6 +22,7 @@ export default {
     initEcharts () {
       // 初始化
       this.totalec = this.echarts.init(document.querySelector('#totalD'))
+      // this.totalec.showLoading()
       let option = {
         title: {
           text: '设备总数排行',

@@ -52,11 +52,12 @@
             </baidu-map>
           </div>
         </el-tab-pane>
+        <el-tab-pane label="消防CRD" disabled> </el-tab-pane>
       </el-tabs>
     </div>
     <div class="total-title">
       <ul>
-        <li @click="sb">设备类型分布</li>
+        <li>设备类型分布</li>
         <li>全部</li>
         <li>电器安全</li>
         <li>燃气探测警报</li>
@@ -103,14 +104,20 @@
       <div class="sidebar-title">事件状态</div>
       <div class="sidebar-one notes">
         <div class="yuan"><p>火警</p></div>
+        <span class="time">2019年12月23日 星期二</span>
+        <span class="address">深圳市龙华新区大浪街道办大浪大浪</span>
       </div>
       <div class="sidebar-two notes">
         <div class="yuan"><p>故障</p></div>
+        <span class="time">2019年12月24日 星期二</span>
+        <span class="address">深圳市龙华新区大浪街道办石岩石岩</span>
       </div>
       <div class="sidebar-three notes">
         <div class="yuan">
           <p class="mt3">事件<br />比例</p>
         </div>
+        <span class="time">2019年12月25日 星期三</span>
+        <span class="address">深圳市龙华新区龙华街道办龙华龙华</span>
       </div>
       <i @click="sidebarS" class="el-icon-error" v-show="sidebarShow"></i>
     </div>
@@ -127,6 +134,11 @@
             <li>这是数据的展示</li>
             <li>这是数据的展示</li>
             <li>这是数据的展示</li>
+            <li>
+              这是数据的展示这是数据的展示这是数据的展示这是数据的展示这是数据的展示这是数据的展示
+            </li>
+            <li>这是数据的展示这是数据的展示这是数据的展示</li>
+            <li>这是数据的展示这是数据的展示这是数据的展示</li>
           </ul>
         </div>
       </div>
@@ -136,10 +148,7 @@
       <i @click="footerS" class="el-icon-error" v-show="footquanShow"></i>
     </div>
     <!-- <div class="dome-cs" v-show="demoshow"></div> -->
-    <el-dialog
-      :title="location + '火警'"
-      :visible.sync="demoshow"
-      width="30%">
+    <el-dialog :title="location + '火警'" :visible.sync="demoshow" width="30%">
       <span>这是一段信息</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="demoshow = false">取 消</el-button>
@@ -161,6 +170,7 @@ export default {
       center: { lng: 0, lat: 0 }, // 经纬度
       zoom: 5, // 地图展示级别
       mapvalue: '',
+      arr: [], // 接收list
       markers: [{}],
       sidebarShow: true,
       footquanShow: true,
@@ -192,6 +202,20 @@ export default {
             }
           },
           {
+            'featureType': 'highway',
+            'elementType': 'geometry.stroke',
+            'stylers': {
+              'color': '#147a92'
+            }
+          },
+          {
+            'featureType': 'arterial',
+            'elementType': 'geometry.fill',
+            'stylers': {
+              'color': '#000000'
+            }
+          },
+          {
             'featureType': 'arterial',
             'elementType': 'geometry.stroke',
             'stylers': {
@@ -217,6 +241,20 @@ export default {
             'elementType': 'geometry.fill',
             'stylers': {
               'color': '#000000'
+            }
+          },
+          {
+            'featureType': 'railway',
+            'elementType': 'geometry.stroke',
+            'stylers': {
+              'color': '#08304b'
+            }
+          },
+          {
+            'featureType': 'subway',
+            'elementType': 'geometry',
+            'stylers': {
+              'lightness': -70
             }
           },
           {
@@ -274,20 +312,32 @@ export default {
             'stylers': {
               'visibility': 'off'
             }
+          },
+          {
+            'featureType': 'all',
+            'elementType': 'labels.icon',
+            'stylers': {
+              'visibility': 'off'
+            }
+          },
+          {
+            'featureType': 'poilabel',
+            'elementType': 'labels.text.stroke',
+            'stylers': {
+              'color': '#2da0c6',
+              'visibility': 'on'
+            }
           }
         ]
       }
     }
   },
   methods: {
-    sb () {
-      console.log(123)
-    },
     handleClick (tab, event) {
       console.log(tab, event)
     },
     handler ({ BMap, map }) {
-      console.log(BMap, map)
+      // console.log(BMap, map)
       this.center.lng = 70.034564
       this.center.lat = 48.96456
       this.zoom = this.zoom
@@ -297,15 +347,15 @@ export default {
     //   this.markers.push({ local: { lng: e.point.lng, lat: e.point.lat }, show: false })
     // },
     /* rmInfo () {
-      this.markers.splice(this.markers[this.markers.length - 1], 1)
-    }, */
+    this.markers.splice(this.markers[this.markers.length - 1], 1)
+  }, */
     locationSuccess (e) { // 百度地图定位完成后
-      console.log(e)
+      // console.log(e)
       this.search.lng = e.point.lng
       this.search.lat = e.point.lat
     },
     searchcomplete (e) { // 百度地图搜索框完成之后
-      console.log(e)
+      // console.log(e)
       if (e) {
         this.search.lng = ''
         this.search.lat = ''
@@ -315,6 +365,7 @@ export default {
     initFireEcharts () {
       // 初始化
       this.myChart1 = this.echarts.init(document.querySelector('#fire-quan'))
+      // this.myChart1.showLoading()
       let option = {
         tooltip: {
           show: false
@@ -536,10 +587,40 @@ export default {
       this.myChart2.setOption(option)
     },
     // 中国地图
-    initChinaMap () {
+    async initChinaMap () {
+      let list = []
+      await this.$http({
+        url: '/js/cm-data.json',
+        method: 'GET'
+      }).then(res => {
+        for (let i = 0; i < res.data.length; i++) {
+          list.push(res.data[i])
+        }
+        this.arr = list // 把list 赋值给数组arr
+      })
       this.myChart3 = this.echarts.init(document.querySelector('#china-map'))
+      let optData = []
+      for (let j = 0; j < this.arr.length; j++) {
+        optData.push({ name: this.arr[j].name, value: this.arr[j].value })
+      }
+      this.$store.state.optData = optData
+      console.log(optData)
       let option = {
         tooltip: {
+          trigger: 'item',
+          backgroundColor: 'transparent',
+          formatter: (params) => {
+            let tipHtml = ''
+            tipHtml = '<div style="background:#fff;border-radius:10px;padding-top:10px;box-shadow:0 0 10px #666">' +
+              '<div style="color:#fff;height:20px;border-radius:6px;font-size:16px;line-height:20px;background-color:#5861a2;text-align:center;margin:0 2px;">' + params.name + '</div>' +
+              '<div style="text-align:left;color:#494949;padding:8px 6px">' +
+              '<p style="font-size:12px;font-weight:bold;">' + '火警次数: ' + params.value[2] + ' ' + '</p>' +
+              '<p style="font-size:12px;font-weight:bold;">' + '用户电话: ' + params.value[3] + ' ' + '</p>' +
+              '<p style="font-size:12px;font-weight:bold;">' + '用户地址: ' + params.value[4] + ' ' + '</p>' +
+              '</div>' + '</div>'
+            // return params.name + ':' + params.value[2]
+            return tipHtml
+          }
         },
         // backgroundColor: '#333',
         geo: {
@@ -580,12 +661,11 @@ export default {
         series: [{
           type: 'effectScatter',
           coordinateSystem: 'geo',
-          data: [{
-            'name': '昆明',
-            'value': [102.73333, 25.05000, 199]
-          }
-
-          ],
+          data: optData,
+          // {
+          //   'name': '深圳',
+          //   'value': [114.07, 22.62, 199, 13813813813, '深圳大浪']
+          // }
           symbolSize: 10,
           showEffectOn: 'render',
           rippleEffect: {
@@ -595,15 +675,15 @@ export default {
             scale: 3
           },
           hoverAnimation: true,
-          label: {
-            normal: {
-              formatter: '{b}',
-              position: 'right',
-              padding: [0, 0, 0, 8],
-              show: true,
-              fontSize: 14
-            }
-          },
+          // label: {
+          //   normal: {
+          //     formatter: '{b}',
+          //     position: 'bottom',
+          //     padding: [0, 0, 0, 8],
+          //     show: true,
+          //     fontSize: 14
+          //   }
+          // },
           itemStyle: {
             normal: {
               color: 'red',
@@ -642,6 +722,7 @@ export default {
   },
   // 页面打开时初始化 echart
   mounted () {
+    // this.huoqu()
     this.initFireEcharts()
     this.initEventEcharts()
     this.initChinaMap()
@@ -670,7 +751,7 @@ export default {
       .el-tabs__header {
         margin-top: 9/96rem;
         z-index: 10;
-        left: 80%;
+        right: 5%;
         background-color: #08304b;
         border-radius: 4px 5px 0 0;
         color: #fff;
@@ -718,7 +799,7 @@ export default {
     #china-map {
       position: absolute;
       width: 100%;
-      height: 100%;
+      height: 200%;
       background-color: transparent;
       // border: 1px solid rgb(44, 106, 177);
       box-shadow: 0px 0px 5/96rem #1176a7 inset;
@@ -739,7 +820,7 @@ export default {
         font-size: 12/96rem;
       }
       &:hover {
-        cursor:pointer
+        cursor: pointer;
       }
     }
   }
@@ -762,8 +843,8 @@ export default {
         color: #fff;
         font-size: 6/96rem;
         &:hover {
-        cursor:pointer
-      }
+          cursor: pointer;
+        }
         i {
           display: block;
           margin: 10% auto 0;
@@ -778,7 +859,8 @@ export default {
   .sidebar {
     background-color: transparent;
     position: absolute;
-    top: 38%;
+    // top: 38%;
+    bottom: 30%;
     right: 5/96rem;
     width: 150/96rem;
     height: 144/96rem;
@@ -795,20 +877,39 @@ export default {
       height: 42/96rem;
       padding-top: 3/96rem;
       background: rgba(209, 161, 106, 0.5);
-    }
-    .yuan {
-      margin-left: 6/96rem;
-      margin-right: 13/96rem;
-      width: 37/96rem;
-      height: 37/96rem;
-      border: 1/96rem dashed #fff;
-      border-radius: 50%;
-      p {
-        margin: 0 auto;
+      .yuan {
+        float: left;
+        margin-left: 6/96rem;
+        margin-right: 13/96rem;
+        width: 37/96rem;
+        height: 37/96rem;
+        border: 1/96rem dashed #fff;
+        border-radius: 50%;
+        p {
+          margin: 0 auto;
+          color: #fff;
+          font-size: 10/96rem;
+          text-align: center;
+          margin-top: 10/96rem;
+        }
+      }
+      .time {
+        width: 85/96rem;
         color: #fff;
-        font-size: 10/96rem;
-        text-align: center;
-        margin-top: 10/96rem;
+        // position: absolute;
+        float: right;
+        margin-top: 3/96rem;
+        margin-right: 5/96rem;
+        font-size: 6/96rem;
+      }
+      .address {
+        float: right;
+        color: #ccc;
+        width: 85/96rem;
+        margin-top: 5/96rem;
+        margin-right: 8/96rem;
+        line-height: 1.2;
+        font-size: 6/96rem;
       }
     }
     .sidebar-two {
@@ -817,7 +918,7 @@ export default {
     .sidebar-three {
       background: rgba(66, 32, 145, 0.3);
       .mt3 {
-        margin-top: 4/96rem;
+        margin-top: 4/96rem !important;
       }
     }
   }
@@ -851,7 +952,6 @@ export default {
     bottom: 0;
     width: 100%;
     height: 25%;
-    // background-color: transparent;
     .fireInfo {
       width: 30%;
       height: 100%;
@@ -875,11 +975,14 @@ export default {
         ul {
           width: 100%;
           height: 100%;
+          overflow-y: scroll;
           li {
-            font-size: 8/96rem;
+            padding-left: 10/96rem;
+            padding-right: 5/96rem;
+            font-size: 7/96rem;
             color: #fff;
-            line-height: 2;
-            overflow: hidden;
+            line-height: 1.8;
+            text-indent: 1em;
           }
         }
       }
@@ -892,7 +995,6 @@ export default {
       left: 35%;
     }
     #event-zzt {
-      opacity: 0.2;
       position: absolute;
       width: 30%;
       height: 100%;

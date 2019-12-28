@@ -80,7 +80,7 @@ export default {
   height: 100%;
   /deep/.el-switch {
     position: absolute;
-    top: -45/96rem;
+    // top: -30/96rem;
     right: 5/96rem;
   }
   .el-col {

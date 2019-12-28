@@ -24,7 +24,7 @@ export default {
           y: '10px',
           textStyle: {
             color: '#fff',
-            fontSize: 16
+            fontSize: 15
           }
         },
         grid: {

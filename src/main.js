@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+// 导入 axios
+import axios from 'axios'
 // 导入element ui框架
 import ElementUI from 'element-ui'
 // 导入element ui样式
@@ -18,6 +20,7 @@ import BaiduMap from 'vue-baidu-map'
 Vue.use(BaiduMap, {
   ak: '6EtTxRf8kxcj3x71mhxGkRYtlfVCbX1S'
 })
+Vue.prototype.$http = axios
 Vue.prototype.echarts = echarts
 Vue.prototype.$moment = moment
 moment.locale('zh-cn')// 需要汉化
