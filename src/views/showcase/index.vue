@@ -60,7 +60,7 @@ export default {
   },
   filters: {
     datefilter: function (value) {
-      return moment(value).format('YYYY年 MM月 Do h:mm:ss dddd')
+      return moment(value).format('YYYY年 MM月 Do H:mm:ss dddd')
     }
   },
   mounted () {

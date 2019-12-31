@@ -32,13 +32,13 @@
   </el-row>
 </template>
 <script>
-import TotalDevice from './components/TotalDevice'
-import DeviceReported from './components/DeviceReported'
-import HiddenDanger from './components/Hidden_Danger'
-import HiddenDangerLevel from './components/HiddenDangerLevel'
-import News from './components/News'
-import Patrol from './components/Patrol'
-import DeviceDistribution from './components/DeviceDistribution'
+import TotalDevice from './components/TotalDevice/TotalDevice'
+import DeviceReported from './components/DeviceReported/DeviceReported'
+import HiddenDanger from './components/Hidden_Danger/Hidden_Danger'
+import HiddenDangerLevel from './components/HiddenDangerLevel/HiddenDangerLevel'
+import News from './components/News/News'
+import Patrol from './components/Patrol/Patrol'
+import DeviceDistribution from './components/DeviceDistribution/DeviceDistribution'
 export default {
   data () {
     return {
@@ -66,11 +66,6 @@ export default {
 
   },
   mounted () {
-    // window.onresize = () => {
-    //   this.myChart1.resize()
-    //   this.myChart2.resize()
-    //   this.myChart3.resize()
-    // }
   }
 }
 </script>

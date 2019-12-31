@@ -1,5 +1,5 @@
 <template>
-  <div id="hidden">
+  <div id="report">
     <!-- 这是用来渲染 echars -->
   </div>
 </template>
@@ -8,7 +8,7 @@
 export default {
   data () {
     return {
-      hiddenec: null,
+      reportec: null,
       dhkshow: true,
       name: ''
     }
@@ -16,33 +16,26 @@ export default {
   methods: {
     initEcharts () {
       // 初始化
-      this.hiddenec = this.echarts.init(document.querySelector('#hidden'))
+      this.reportec = this.echarts.init(document.querySelector('#report'))
       let option = {
         title: {
-          text: '最近30天隐患数量',
-          subtext: '最近30天隐患数量趋势',
-          sublink: '#',
-          x: '10px',
-          y: '5px',
-          itemGap: 10,
+          text: '设备上报监控信息统计',
+          x: 'center',
+          y: '10px',
           textStyle: {
             color: '#fff',
-            fontSize: 16
-          },
-          subtextStyle: {
-            color: '#fff',
-            fontSize: 11
+            fontSize: 15
           }
         },
         grid: {
-          top: 70,
+          top: 50,
           x: 55,
-          y2: 30
+          y2: 40
         },
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['2019-12-6', '2019-12-07', '2019-12-08', '2019-12-09', '2019-12-10', '2019-12-11'],
+          data: ['烟感', '燃气', '电气', '网关', 'NB', 'GBRS'],
           axisLine: {
             lineStyle: {
               color: '#289fe3', // 更改坐标轴颜色,
@@ -50,7 +43,6 @@ export default {
             }
           },
           axisLabel: {
-            interval: 1,
             textStyle: {
               color: '#fff',
               fontSize: 10
@@ -61,13 +53,17 @@ export default {
           }
         },
         yAxis: {
+          max: function (value) {
+            return value.max + 20
+          },
           type: 'value',
+          // data: ['烟感', '燃气', '电气', '网关', 'NB', 'GBRS'],
           axisLabel: {
             textStyle: {
               color: '#fff',
               fontSize: 12
             },
-            formatter: '{value} %'
+            formatter: '{value}%'
           },
           axisLine: {
             lineStyle: {
@@ -84,7 +80,7 @@ export default {
         },
         series: [
           {
-            data: [100, 30, 80, 30, 60, 30],
+            data: [10, 30, 80, 30, 60, 30],
             type: 'line',
             areaStyle: {
               color: {
@@ -121,10 +117,12 @@ export default {
         tooltip: {
         }
       }
-      this.hiddenec.setOption(option)
-      this.hiddenec.on('click', (param) => {
+      this.reportec.setOption(option)
+      this.reportec.on('click', (param) => {
+        // this.dhkshow = true
+        console.log(param)
         this.name = param.name
-        this.$emit('hiddenec', this.dhkshow, this.name)
+        this.$emit('reportec', this.dhkshow, this.name)
       })
     }
   },
@@ -132,7 +130,7 @@ export default {
   mounted () {
     this.initEcharts()
     window.addEventListener('resize', () => {
-      this.hiddenec.resize()
+      this.reportec.resize()
     })
   }
   // vue 的生命周期的问题；
@@ -142,7 +140,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-#hidden {
+#report {
   background-color: transparent;
 }
 </style>

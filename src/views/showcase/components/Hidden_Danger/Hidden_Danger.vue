@@ -1,5 +1,5 @@
 <template>
-  <div id="totalD">
+  <div id="hidden">
     <!-- 这是用来渲染 echars -->
   </div>
 </template>
@@ -8,51 +8,52 @@
 export default {
   data () {
     return {
-      totalec: null,
+      hiddenec: null,
       dhkshow: true,
       name: ''
     }
   },
-
   methods: {
-    // 折线图
-    // clickShow () {
-
-    // },
     initEcharts () {
       // 初始化
-      this.totalec = this.echarts.init(document.querySelector('#totalD'))
-      // this.totalec.showLoading()
+      this.hiddenec = this.echarts.init(document.querySelector('#hidden'))
       let option = {
         title: {
-          text: '设备总数排行',
-          x: 'center',
-          y: '10px',
+          text: '最近30天隐患数量',
+          subtext: '最近30天隐患数量趋势',
+          sublink: '#',
+          x: '10px',
+          y: '5px',
+          itemGap: 10,
           textStyle: {
             color: '#fff',
             fontSize: 16
+          },
+          subtextStyle: {
+            color: '#fff',
+            fontSize: 11
           }
         },
         grid: {
-          top: 50,
-          x: 45,
-          x2: 20,
-          y2: 40
+          top: 70,
+          x: 55,
+          y2: 30
         },
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['2019', '', '', '', '', '', '', '', '', ''],
+          data: ['2019-12-6', '2019-12-07', '2019-12-08', '2019-12-09', '2019-12-10', '2019-12-11'],
           axisLine: {
             lineStyle: {
-              color: '#fff91e', // 更改坐标轴颜色,
+              color: '#289fe3', // 更改坐标轴颜色,
               width: 2
             }
           },
           axisLabel: {
+            interval: 1,
             textStyle: {
               color: '#fff',
-              fontSize: 14
+              fontSize: 10
             }
           },
           axisTick: {
@@ -60,17 +61,20 @@ export default {
           }
         },
         yAxis: {
+          max: function (value) {
+            return value.max + 20
+          },
           type: 'value',
-          min: 100,
           axisLabel: {
             textStyle: {
               color: '#fff',
-              fontSize: 10
-            }
+              fontSize: 12
+            },
+            formatter: '{value} %'
           },
           axisLine: {
             lineStyle: {
-              color: '#fff91e', // 更改坐标轴颜色,
+              color: '#289fe3', // 更改坐标轴颜色,
               width: 2
             }
           },
@@ -83,7 +87,7 @@ export default {
         },
         series: [
           {
-            data: [4000, 3500, 3800, 3200, 3600, 3000, 2200, 2000, 2200, 2000],
+            data: [80, 30, 100, 30, 60, 30],
             type: 'line',
             areaStyle: {
               color: {
@@ -94,33 +98,36 @@ export default {
                 y2: 1,
                 colorStops: [
                   {
-                    offset: 0.6,
-                    color: '#f2fe23' // 0% 处的颜色
+                    offset: 1,
+                    color: '#0e5778' // 0% 处的颜色
                   },
                   {
-                    offset: 1,
-                    color: '#45a2ce' // 100% 处的颜色
+                    offset: 0.7,
+                    color: '#23709d' // 30% 处的颜色
+                  },
+                  {
+                    offset: 0,
+                    color: '#3c9bd5' // 100% 处的颜色
                   }
                 ],
                 global: false // 缺省为 false
               }
             },
             lineStyle: {
-              color: '#f2fe23'
+              color: '#3c9bd5'
             },
             itemStyle: {
-              color: '#01a1dd'
+              color: '#f8fc0d'
             }
           }
         ],
         tooltip: {
         }
       }
-      this.totalec.setOption(option)
-      this.totalec.on('click', (param) => {
-        // this.dhkshow = true
+      this.hiddenec.setOption(option)
+      this.hiddenec.on('click', (param) => {
         this.name = param.name
-        this.$emit('totalec', this.dhkshow, this.name)
+        this.$emit('hiddenec', this.dhkshow, this.name)
       })
     }
   },
@@ -128,7 +135,7 @@ export default {
   mounted () {
     this.initEcharts()
     window.addEventListener('resize', () => {
-      this.totalec.resize()
+      this.hiddenec.resize()
     })
   }
   // vue 的生命周期的问题；
@@ -138,7 +145,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-#totalD {
+#hidden {
   background-color: transparent;
 }
 </style>
