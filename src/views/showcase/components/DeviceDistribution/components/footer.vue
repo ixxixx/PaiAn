@@ -373,7 +373,7 @@ export default {
     this.initFaultEcharts()
     window.addEventListener('resize', () => {
       this.fireec.resize()
-      this.fault.resize()
+      this.faultec.resize()
       this.eventRatioec.resize()
     })
   }

@@ -14,11 +14,11 @@
     <div class="total-title">
       <ul>
         <li>设备类型分布</li>
-        <li>全部</li>
-        <li>电器安全</li>
-        <li>燃气探测警报</li>
-        <li>火灾烟雾警报</li>
-        <li>物联网关</li>
+        <li @click="allGetPointData">全部</li>
+        <li @click="dqaqGetPointData">电器安全</li>
+        <li @click="rqtcbjGetPointData">燃气探测警报</li>
+        <li @click="hzywbjGetPointData">火灾烟雾警报</li>
+        <li @click="wlwgGetPointData">物联网关</li>
       </ul>
     </div>
     <i @click="navB" v-show="!navShow" class="el-icon-circle-plus navjia"></i>
@@ -52,7 +52,11 @@
       <i @click="navS" class="el-icon-error" v-show="navShow"></i>
     </div>
     <!-- 侧边栏 -->
-    <i @click="sidebarB" v-show="!sidebarShow" class="el-icon-circle-plus sidebarjia"></i>
+    <i
+      @click="sidebarB"
+      v-show="!sidebarShow"
+      class="el-icon-circle-plus sidebarjia"
+    ></i>
     <div class="sidebar" v-show="sidebarShow" @dblclick="sidebarS">
       <div class="sidebar-title">事件状态</div>
       <div class="sidebar-one notes">
@@ -75,7 +79,7 @@
       <i @click="sidebarS" class="el-icon-error" v-show="sidebarShow"></i>
     </div>
     <!-- 底部 -->
-     <Footer></Footer>
+    <Footer></Footer>
   </div>
 </template>
 
@@ -92,7 +96,11 @@ export default {
       shouxuan: 'first',
       sidebarShow: true,
       navShow: true,
-      optData: [] // 获取optData
+      optData: [], // 获取optData
+      optData1: [], // 获取optData1
+      optData2: [], // 获取optData2
+      optData3: [], // 获取optData3
+      optData4: [] // 获取optData4
     }
   },
   components: {
@@ -103,9 +111,9 @@ export default {
   },
   methods: {
     // 获取vuex数值 传递给地图
-    async agetPointData () {
+    async allGetPointData () {
       await this.$http('/js/cm-data.json').then(res => {
-        this.$store.dispatch('saveOptData', res.data)
+        this.$store.commit('saveOptData', res.data)
         this.optData = this.$store.state.a.optData
         console.log(this.optData)
         if (this.chinaMapec) {
@@ -115,6 +123,54 @@ export default {
         }
       })
     },
+    qkPointData () {
+      this.optData = []
+      this.optData1 = [] // optData1并清空
+      this.optData2 = [] // optData2清空
+      this.optData3 = [] // optData3清空
+      this.optData4 = [] // optData4清空
+    },
+    dqaqGetPointData () {
+      this.qkPointData()
+      for (let i = 0; i < this.$store.state.a.optData.length; i++) {
+        if (this.$store.state.a.optData[i].id === 1) {
+          this.optData1.push(this.$store.state.a.optData[i])
+        } else {
+        }
+      }
+      this.renderMap(this.optData1)
+    },
+    rqtcbjGetPointData () {
+      this.qkPointData()
+      for (let i = 0; i < this.$store.state.a.optData.length; i++) {
+        if (this.$store.state.a.optData[i].id === 2) {
+          this.optData2.push(this.$store.state.a.optData[i])
+        } else {
+        }
+      }
+      this.renderMap(this.optData2)
+    },
+    hzywbjGetPointData () {
+      this.qkPointData()
+      for (let i = 0; i < this.$store.state.a.optData.length; i++) {
+        if (this.$store.state.a.optData[i].id === 3) {
+          this.optData3.push(this.$store.state.a.optData[i])
+        } else {
+        }
+      }
+      this.renderMap(this.optData3)
+    },
+    wlwgGetPointData () {
+      this.qkPointData()
+      for (let i = 0; i < this.$store.state.a.optData.length; i++) {
+        if (this.$store.state.a.optData[i].id === 4) {
+          this.optData4.push(this.$store.state.a.optData[i])
+        } else {
+        }
+      }
+      this.renderMap(this.optData4)
+    },
+    //  --------------------
     handleClick (tab, event) {
       console.log(tab, event)
     },
@@ -153,9 +209,9 @@ export default {
             tipHtml = '<div style="background:#fff;border-radius:10px;padding-top:10px;box-shadow:0 0 10px #666">' +
               '<div style="color:#fff;height:20px;border-radius:6px;font-size:16px;line-height:20px;background-color:#5861a2;text-align:center;margin:0 2px;">' + params.name + '</div>' +
               '<div style="text-align:left;color:#494949;padding:8px 6px">' +
-              '<p style="font-size:12px;font-weight:bold;">' + '火警次数: ' + params.value[2] + ' ' + '</p>' +
-              '<p style="font-size:12px;font-weight:bold;">' + '用户电话: ' + params.value[3] + ' ' + '</p>' +
-              '<p style="font-size:12px;font-weight:bold;">' + '用户地址: ' + params.value[4] + ' ' + '</p>' +
+              '<p style="font-size:12px;font-weight:bold;">' + '火警次数: ' + params.value[2].frequency + ' ' + '</p>' +
+              '<p style="font-size:12px;font-weight:bold;">' + '用户电话: ' + params.value[2].phone + ' ' + '</p>' +
+              '<p style="font-size:12px;font-weight:bold;">' + '用户地址: ' + params.value[2].address + ' ' + '</p>' +
               '</div>' + '</div>'
             return tipHtml
           }
@@ -243,7 +299,7 @@ export default {
   },
   // 页面打开时初始化 echart
   mounted () {
-    this.agetPointData()
+    this.allGetPointData()
     window.addEventListener('resize', () => {
       this.chinaMapec.resize()
     })
@@ -448,6 +504,5 @@ export default {
     top: 2/96rem;
     right: 2/96rem;
   }
-
 }
 </style>
