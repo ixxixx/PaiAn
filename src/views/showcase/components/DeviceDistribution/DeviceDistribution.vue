@@ -213,6 +213,8 @@ export default {
               '<p style="font-size:12px;font-weight:bold;">' + '用户电话: ' + params.value[2].phone + ' ' + '</p>' +
               '<p style="font-size:12px;font-weight:bold;">' + '用户地址: ' + params.value[2].address + ' ' + '</p>' +
               '</div>' + '</div>'
+            console.log(params)
+
             return tipHtml
           }
         },
