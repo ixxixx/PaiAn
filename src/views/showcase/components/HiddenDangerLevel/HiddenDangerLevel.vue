@@ -130,7 +130,7 @@ export default {
               }
             }
           },
-          barCategoryGap: '25%',
+          barCategoryGap: '85%',
           data: [100, 80, 60]
         }
 
