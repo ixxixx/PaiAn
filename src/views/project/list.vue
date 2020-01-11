@@ -109,7 +109,7 @@ export default {
       screen_project: '',
       screen_rchitecture: '',
       // 分页
-      currentPage1: 5
+      currentPage1: 1
     }
   },
   methods: {

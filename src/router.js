@@ -21,9 +21,14 @@ let router = new Router({
       component: () => import('@/views/layout'),
       children: [
         {
+          path: '/showcase/baiduMap',
+          name: '/showcase/baiduMap',
+          component: () => import('@/views/showcase/components/DeviceDistribution/components/BaiDuMap')
+        },
+        {
           path: '/home',
           name: 'home',
-          component: () => import('@/views/home')
+          component: () => import('@/views/showcase/components/DeviceDistribution/DeviceDistribution')
         },
         {
           path: '/personal',
@@ -156,10 +161,28 @@ let router = new Router({
         },
         // 维修
         {
-          path: '/repair',
-          name: 'repair',
-          component: () => import('@/views/repair'),
-          meta: ['维修/维保']
+          path: '/repair/recordFree',
+          name: 'repair/recordFree',
+          component: () => import('@/views/repair/record/free.vue'),
+          meta: ['维修/维保', '维修记录(免费)']
+        },
+        {
+          path: '/repair/recordCharge',
+          name: 'repair/recordCharge',
+          component: () => import('@/views/repair/record/charge.vue'),
+          meta: ['维修/维保', '维修记录(收费)']
+        },
+        {
+          path: '/repair/recordMyCharge',
+          name: 'repair/recordMyCharge',
+          component: () => import('@/views/repair/record/myCharge.vue'),
+          meta: ['维修/维保', '维修记录(我方收费)']
+        },
+        {
+          path: '/repair/NewOrder',
+          name: 'repair/NewOrder',
+          component: () => import('@/views/repair/NewOrder'),
+          meta: ['维修/维保', '维修下单']
         },
         // 系统设置
         {
@@ -172,6 +195,7 @@ let router = new Router({
     },
     {
       path: '/showcase',
+      name: 'showcase',
       component: () => import('@/views/showcase')
     },
     {

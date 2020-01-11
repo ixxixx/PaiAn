@@ -93,7 +93,7 @@ export default {
     top: -11/96rem;
     width: 170/96rem;
     height: 23/96rem;
-    background-color: #dfe3e6;
+    background-color: #eee;
     text-align: center;
     line-height: 23/96rem;
     font-size: 14/96rem;

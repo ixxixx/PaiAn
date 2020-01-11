@@ -49,17 +49,19 @@ export default {
   }
 }
 .el-aside {
-  background-color: #545c64;
+  background-color: #304156;
   color: #333;
 }
 .el-header {
-  background-color: rgb(239, 239, 240);
+  background-color: rgb(128, 170, 221);
   color: #000;
   line-height: 1;
 }
 .mbxNav {
-  margin-top: 5/96rem;
-  background-color: rgb(153, 145, 146);
+  margin-top: 3/96rem;
+  margin-bottom: 3/96rem;
+  background-color: rgb(182, 206, 236);
+  // border: 2px solid #ccc;
   height: 25/96rem;
   .el-breadcrumb {
   font-size: 9/96rem;
@@ -68,7 +70,8 @@ export default {
   }
 }
 .el-main {
-  background-color: rgb(223, 227, 230);
+  background-color: rgb(84, 114, 150);
+  // background-color: #eee;
   color: #333;
 }
 </style>
